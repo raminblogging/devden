@@ -35,8 +35,8 @@ body{background:var(--black);color:var(--white);font-family:var(--mono);font-siz
 ::-webkit-scrollbar-thumb{background:var(--border2);border-radius:3px}
 ::-webkit-scrollbar-thumb:hover{background:var(--blue)}
 /* cursor */
-#cur{position:fixed;width:10px;height:10px;background:var(--blue-b);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:width .2s,height .2s,opacity .2s;mix-blend-mode:screen}
-#cur-r{position:fixed;width:32px;height:32px;border:1px solid rgba(59,130,246,.35);border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:width .25s,height .25s}
+#cur{position:fixed;width:10px;height:10px;background:var(--blue-b);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:width .2s,height .2s,opacity .2s;mix-blend-mode:screen;opacity:0;left:-100px;top:-100px}
+#cur-r{position:fixed;width:32px;height:32px;border:1px solid rgba(59,130,246,.35);border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:width .25s,height .25s;opacity:0;left:-100px;top:-100px}
 
 /* ═══ NAV ═══ */
 #nav{position:fixed;top:0;left:0;right:0;z-index:500;height:58px;display:flex;align-items:center;padding:0 32px;gap:0;background:rgba(6,7,13,.92);backdrop-filter:blur(18px);border-bottom:.5px solid var(--border);transition:border-color .3s}
@@ -1016,10 +1016,7 @@ function runCode() {
   const preview = document.getElementById('pg-preview');
   const consoleEl = document.getElementById('pg-console');
   try {
-    const doc = preview.contentDocument || preview.contentWindow.document;
-    doc.open();
-    doc.write(code.replace('<\\/script>','</script>'));
-    doc.close();
+    preview.srcdoc = code;
     consoleEl.textContent = '// ✓ Ran at ' + new Date().toLocaleTimeString();
     consoleEl.style.color = '#86efac';
   } catch(e) {
@@ -1031,8 +1028,12 @@ function runCode() {
 /* ═══ CURSOR ═══ */
 const cur = document.getElementById('cur');
 const curR = document.getElementById('cur-r');
-let mx=0,my=0,rx=0,ry=0;
-document.addEventListener('mousemove', e => { mx=e.clientX; my=e.clientY; cur.style.left=mx+'px'; cur.style.top=my+'px'; });
+let mx=-200,my=-200,rx=-200,ry=-200,cursorVisible=false;
+document.addEventListener('mousemove', e => {
+  mx=e.clientX; my=e.clientY;
+  cur.style.left=mx+'px'; cur.style.top=my+'px';
+  if(!cursorVisible){ cursorVisible=true; cur.style.opacity='1'; curR.style.opacity='1'; }
+});
 (function anim() { rx+=(mx-rx)*.15; ry+=(my-ry)*.15; curR.style.left=rx+'px'; curR.style.top=ry+'px'; requestAnimationFrame(anim); })();
 document.addEventListener('mouseover', e => {
   if (e.target.matches('button,a,.fc,.p-card,.sb-item,.rel-chip,.snip-card,.lvl-pill,.nav-pill,.pg-tab')) {
