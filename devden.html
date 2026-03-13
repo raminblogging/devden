@@ -1,0 +1,1077 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DevDen by Ram — learn.ramsrinivasan.in</title>
+<meta name="description" content="One place for every function you need. HTML, CSS, JavaScript, Python, React, SQL — built for vibe coders.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;700&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════
+   DEVDEN BY RAM — GLOBAL DESIGN SYSTEM
+═══════════════════════════════════════════ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --black:#06070d;--black2:#0a0c14;--black3:#0f1117;
+  --border:#1a2236;--border2:#243044;--border3:#2d3a50;
+  --blue:#2563eb;--blue-b:#3b82f6;--blue-dim:rgba(37,99,235,.08);--blue-mid:rgba(37,99,235,.15);
+  --silver:#94a3b8;--silver2:#64748b;--silver3:#475569;--silver4:#334155;
+  --white:#e2e8f0;--white2:#cbd5e1;
+  --green:#22c55e;--green-dim:rgba(34,197,94,.1);
+  --mono:'JetBrains Mono',monospace;--display:'Syne',sans-serif;
+  /* platform colors */
+  --html:#f97316;--html-dim:rgba(249,115,22,.09);
+  --css:#a78bfa;--css-dim:rgba(167,139,250,.09);
+  --js:#eab308;--js-dim:rgba(234,179,8,.09);
+  --py:#10b981;--py-dim:rgba(16,185,129,.09);
+  --react:#06b6d4;--react-dim:rgba(6,182,212,.09);
+  --sql:#f87171;--sql-dim:rgba(248,113,113,.09);
+}
+html{scroll-behavior:smooth}
+body{background:var(--black);color:var(--white);font-family:var(--mono);font-size:14px;line-height:1.6;overflow-x:hidden;cursor:none}
+::-webkit-scrollbar{width:5px}
+::-webkit-scrollbar-track{background:var(--black)}
+::-webkit-scrollbar-thumb{background:var(--border2);border-radius:3px}
+::-webkit-scrollbar-thumb:hover{background:var(--blue)}
+/* cursor */
+#cur{position:fixed;width:10px;height:10px;background:var(--blue-b);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:width .2s,height .2s,opacity .2s;mix-blend-mode:screen}
+#cur-r{position:fixed;width:32px;height:32px;border:1px solid rgba(59,130,246,.35);border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:width .25s,height .25s}
+
+/* ═══ NAV ═══ */
+#nav{position:fixed;top:0;left:0;right:0;z-index:500;height:58px;display:flex;align-items:center;padding:0 32px;gap:0;background:rgba(6,7,13,.92);backdrop-filter:blur(18px);border-bottom:.5px solid var(--border);transition:border-color .3s}
+.nav-logo{display:flex;align-items:center;gap:9px;font-family:var(--display);font-size:16px;font-weight:700;color:var(--white);text-decoration:none;margin-right:auto;letter-spacing:-.02em;cursor:pointer}
+.logo-mark{width:26px;height:26px;background:var(--blue);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#fff;font-family:var(--mono)}
+.nav-logo .by{color:var(--silver2);font-weight:400;font-size:13px}
+.nav-pills{display:flex;gap:2px;margin-right:18px}
+.nav-pill{font-family:var(--mono);font-size:11px;color:var(--silver2);padding:5px 11px;border-radius:5px;border:none;background:none;cursor:pointer;transition:color .15s,background .15s;display:flex;align-items:center;gap:5px}
+.nav-pill:hover{color:var(--white);background:var(--black2)}
+.nav-pill.active{color:var(--white)}
+.nav-pill .pip{width:6px;height:6px;border-radius:50%;background:currentColor;opacity:.6}
+.nav-search{background:var(--black2);border:.5px solid var(--border);border-radius:7px;padding:6px 12px;font-size:11px;font-family:var(--mono);color:var(--silver3);display:flex;align-items:center;gap:7px;cursor:pointer;transition:border-color .15s;margin-right:10px}
+.nav-search:hover{border-color:var(--border2);color:var(--silver)}
+.nav-search kbd{font-size:10px;background:var(--border);border-radius:3px;padding:1px 5px;color:var(--silver3)}
+.nav-btn{background:var(--blue);border:none;border-radius:6px;padding:7px 14px;font-size:11px;font-family:var(--mono);color:#fff;cursor:pointer;transition:background .2s,transform .15s}
+.nav-btn:hover{background:#1d4ed8;transform:translateY(-1px)}
+
+/* ═══ PAGE CONTAINER ═══ */
+#page{padding-top:58px;min-height:100vh}
+.view{display:none}
+.view.active{display:block}
+
+/* ═══ SEARCH MODAL ═══ */
+#s-overlay{position:fixed;inset:0;background:rgba(6,7,13,.84);backdrop-filter:blur(10px);z-index:1000;display:flex;align-items:flex-start;justify-content:center;padding-top:100px;opacity:0;pointer-events:none;transition:opacity .2s}
+#s-overlay.open{opacity:1;pointer-events:all}
+#s-modal{width:100%;max-width:620px;background:#0c0e17;border:.5px solid var(--border2);border-radius:14px;overflow:hidden;transform:translateY(-10px) scale(.98);transition:transform .2s;display:flex;flex-direction:column;max-height:530px;box-shadow:0 40px 80px rgba(0,0,0,.6)}
+#s-overlay.open #s-modal{transform:translateY(0) scale(1)}
+#s-bar{display:flex;align-items:center;gap:10px;padding:14px 18px;border-bottom:.5px solid var(--border)}
+#s-icon{color:var(--silver2);font-size:15px}
+#s-inp{flex:1;background:none;border:none;outline:none;font-family:var(--mono);font-size:14px;color:var(--white);caret-color:var(--blue-b)}
+#s-inp::placeholder{color:var(--silver3)}
+#s-esc{font-size:10px;color:var(--silver3);background:var(--border);border-radius:4px;padding:3px 7px;cursor:pointer}
+#s-filters{display:flex;gap:5px;padding:10px 16px;border-bottom:.5px solid var(--border);overflow-x:auto}
+#s-filters::-webkit-scrollbar{display:none}
+.sf{font-size:10px;font-family:var(--mono);padding:4px 10px;border-radius:100px;border:.5px solid var(--border2);color:var(--silver3);background:none;cursor:pointer;transition:all .15s;white-space:nowrap}
+.sf:hover{color:var(--silver)}
+.sf.active{border-color:rgba(59,130,246,.4);color:var(--blue-b);background:var(--blue-dim)}
+#s-res{overflow-y:auto;flex:1;padding:6px 0}
+#s-res::-webkit-scrollbar{width:3px}
+#s-res::-webkit-scrollbar-thumb{background:var(--border2)}
+.s-section-lbl{font-size:10px;color:var(--silver3);letter-spacing:.1em;text-transform:uppercase;padding:8px 18px 5px;display:block}
+.s-item{display:flex;align-items:center;gap:12px;padding:9px 18px;cursor:pointer;transition:background .1s;position:relative}
+.s-item:hover,.s-item.focused{background:var(--blue-dim)}
+.s-item.focused::before{content:'';position:absolute;left:0;top:0;bottom:0;width:2px;background:var(--blue-b)}
+.s-ico{width:32px;height:32px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0}
+.s-body{flex:1;min-width:0}
+.s-name{font-size:13px;color:var(--white)}
+.s-name mark{background:none;color:var(--blue-b);font-weight:700}
+.s-desc{font-size:11px;color:var(--silver3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.s-badge{font-size:9px;padding:2px 6px;border-radius:4px;font-weight:600;text-transform:uppercase;letter-spacing:.05em;flex-shrink:0}
+#s-foot{display:flex;align-items:center;gap:14px;padding:9px 18px;border-top:.5px solid var(--border)}
+.sfh{display:flex;align-items:center;gap:4px;font-size:11px;color:var(--silver3)}
+.sfk{background:var(--border);border-radius:3px;padding:2px 6px;font-size:10px;color:var(--silver2)}
+#s-count{margin-left:auto;font-size:11px;color:var(--silver3)}
+
+/* ═══ HOME VIEW ═══ */
+.hero{min-height:calc(100vh - 58px);display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:80px 40px 60px;position:relative;overflow:hidden}
+.hero-grid{position:absolute;inset:0;background-image:linear-gradient(var(--border) 1px,transparent 1px),linear-gradient(90deg,var(--border) 1px,transparent 1px);background-size:60px 60px;opacity:.22;mask-image:radial-gradient(ellipse 80% 70% at 50% 40%,#000 40%,transparent 100%)}
+.hero-orb{position:absolute;width:640px;height:640px;border-radius:50%;background:radial-gradient(circle,rgba(37,99,235,.11) 0%,transparent 70%);top:50%;left:50%;transform:translate(-50%,-62%);animation:orb 7s ease-in-out infinite;pointer-events:none}
+@keyframes orb{0%,100%{transform:translate(-50%,-62%) scale(1);opacity:.8}50%{transform:translate(-50%,-62%) scale(1.1);opacity:1}}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;font-size:11px;color:var(--blue-b);border:.5px solid rgba(59,130,246,.3);border-radius:100px;padding:5px 14px;margin-bottom:28px;background:var(--blue-dim);position:relative;z-index:1;animation:fade-up .6s ease forwards .15s;opacity:0}
+.badge-pulse{width:6px;height:6px;background:var(--blue-b);border-radius:50%;animation:pulse 2s ease infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+.hero-title{font-family:var(--display);font-size:clamp(40px,7vw,78px);font-weight:800;line-height:1.05;letter-spacing:-.04em;color:var(--white);margin-bottom:22px;position:relative;z-index:1;animation:fade-up .6s ease forwards .3s;opacity:0}
+.hero-title .acc{color:var(--blue-b)}
+.hero-title .dim{color:var(--silver3)}
+.hero-sub{font-size:14px;color:var(--silver2);max-width:500px;line-height:1.75;margin-bottom:34px;position:relative;z-index:1;animation:fade-up .6s ease forwards .45s;opacity:0}
+.hero-actions{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;position:relative;z-index:1;animation:fade-up .6s ease forwards .6s;opacity:0}
+.btn-p{background:var(--blue);border:none;border-radius:8px;padding:11px 26px;font-size:12px;font-family:var(--mono);color:#fff;cursor:pointer;transition:background .2s,transform .15s;position:relative;overflow:hidden}
+.btn-p::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,.08) 0%,transparent 60%)}
+.btn-p:hover{background:#1d4ed8;transform:translateY(-2px)}
+.btn-o{background:transparent;border:.5px solid var(--border2);border-radius:8px;padding:11px 26px;font-size:12px;font-family:var(--mono);color:var(--silver);cursor:pointer;transition:border-color .2s,color .2s,transform .15s}
+.btn-o:hover{border-color:var(--blue-b);color:var(--white);transform:translateY(-2px)}
+.hero-stats{display:flex;gap:48px;justify-content:center;margin-top:56px;padding-top:36px;border-top:.5px solid var(--border);position:relative;z-index:1;animation:fade-up .6s ease forwards .75s;opacity:0;width:100%;max-width:580px}
+.stat-n{font-family:var(--display);font-size:30px;font-weight:700;color:var(--white);display:block}
+.stat-l{font-size:10px;color:var(--silver3);margin-top:3px;display:block;letter-spacing:.04em}
+@keyframes fade-up{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+
+/* Platform grid */
+.plat-grid-wrap{background:var(--black2);border-top:.5px solid var(--border);border-bottom:.5px solid var(--border);padding:28px 40px}
+.plat-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:8px;max-width:1100px;margin:0 auto}
+.p-card{background:var(--black);border:.5px solid var(--border);border-radius:10px;padding:18px 14px;text-align:center;cursor:pointer;transition:all .2s;position:relative;overflow:hidden}
+.p-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;opacity:0;transition:opacity .2s}
+.p-card:hover{transform:translateY(-3px);border-color:var(--border2)}
+.p-card:hover::before{opacity:1}
+.p-card.html::before{background:var(--html)}
+.p-card.css::before{background:var(--css)}
+.p-card.js::before{background:var(--js)}
+.p-card.py::before{background:var(--py)}
+.p-card.react::before{background:var(--react)}
+.p-card.sql::before{background:var(--sql)}
+.p-icon{font-size:24px;margin-bottom:8px;display:block}
+.p-name{font-size:12px;color:var(--silver);font-weight:600;display:block}
+.p-count{font-size:10px;color:var(--silver3);margin-top:3px;display:block}
+
+/* Features */
+.section{padding:72px 40px;max-width:1100px;margin:0 auto}
+.sec-tag{font-size:10px;color:var(--blue-b);letter-spacing:.12em;text-transform:uppercase;margin-bottom:10px;display:block}
+.sec-title{font-family:var(--display);font-size:clamp(26px,4vw,42px);font-weight:700;color:var(--white);letter-spacing:-.03em;line-height:1.1;margin-bottom:12px}
+.sec-sub{font-size:13px;color:var(--silver2);max-width:460px;line-height:1.75;margin-bottom:44px}
+.feats{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.feat{background:var(--black2);border:.5px solid var(--border);border-radius:12px;padding:22px;transition:border-color .2s,transform .2s}
+.feat:hover{border-color:var(--border2);transform:translateY(-3px)}
+.feat.hl{border-color:rgba(37,99,235,.35);background:var(--blue-dim)}
+.feat-ico{width:38px;height:38px;border:.5px solid rgba(59,130,246,.2);border-radius:8px;background:var(--blue-dim);display:flex;align-items:center;justify-content:center;font-size:17px;margin-bottom:14px}
+.feat-t{font-family:var(--display);font-size:14px;font-weight:600;color:var(--white);margin-bottom:6px}
+.feat-d{font-size:11px;color:var(--silver3);line-height:1.7}
+
+/* CTA */
+.cta-wrap{padding:72px 40px;text-align:center;max-width:1100px;margin:0 auto}
+.cta-box{background:var(--black2);border:.5px solid var(--border2);border-radius:16px;padding:56px 40px;position:relative;overflow:hidden}
+.cta-box::before{content:'';position:absolute;top:-1px;left:10%;right:10%;height:2px;background:linear-gradient(90deg,transparent,var(--blue),transparent)}
+.cta-t{font-family:var(--display);font-size:clamp(26px,4vw,44px);font-weight:800;color:var(--white);letter-spacing:-.03em;margin-bottom:12px}
+.cta-t .acc{color:var(--blue-b)}
+.cta-s{font-size:13px;color:var(--silver2);margin-bottom:28px}
+.cta-btns{display:flex;gap:10px;justify-content:center}
+footer{border-top:.5px solid var(--border);padding:26px 40px;display:flex;align-items:center;gap:18px}
+.foot-logo{font-family:var(--display);font-size:14px;font-weight:700;color:var(--silver);margin-right:auto;display:flex;align-items:center;gap:8px}
+.foot-logo span{font-weight:400;font-size:11px;color:var(--silver3)}
+.foot-lk{font-size:11px;color:var(--silver3);text-decoration:none;transition:color .15s;cursor:pointer}
+.foot-lk:hover{color:var(--silver)}
+.foot-domain{font-size:10px;color:var(--blue-b);border:.5px solid rgba(59,130,246,.3);border-radius:4px;padding:3px 8px}
+
+/* ═══ PLATFORM VIEW ═══ */
+.plat-hero{padding:40px 32px 32px;max-width:1200px;margin:0 auto;display:flex;align-items:flex-end;justify-content:space-between;gap:32px;flex-wrap:wrap}
+.plat-badge{display:inline-flex;align-items:center;gap:8px;border-radius:8px;padding:6px 14px;margin-bottom:16px;font-size:12px;border:.5px solid transparent}
+.plat-title{font-family:var(--display);font-size:clamp(32px,5vw,56px);font-weight:800;letter-spacing:-.04em;color:var(--white);line-height:1.05;margin-bottom:12px}
+.plat-sub{font-size:12px;color:var(--silver2);max-width:380px;line-height:1.75}
+.plat-stats{display:flex;gap:16px;flex-wrap:wrap;align-self:flex-end}
+.pstat{background:var(--black2);border:.5px solid var(--border);border-radius:9px;padding:12px 18px;text-align:center;min-width:80px}
+.pstat-n{font-family:var(--display);font-size:22px;font-weight:700;color:var(--white);display:block}
+.pstat-l{font-size:9px;color:var(--silver3);margin-top:2px;display:block;letter-spacing:.05em}
+.full-line{height:.5px;background:var(--border)}
+/* 3-col layout */
+.plat-layout{display:grid;grid-template-columns:220px 1fr 320px;gap:0;max-width:1200px;margin:0 auto;min-height:calc(100vh - 200px)}
+/* sidebar */
+.plat-sb{border-right:.5px solid var(--border);padding:20px 14px;position:sticky;top:58px;height:calc(100vh - 58px);overflow-y:auto}
+.plat-sb::-webkit-scrollbar{width:3px}
+.plat-sb::-webkit-scrollbar-thumb{background:var(--border2)}
+.sb-search{background:var(--black2);border:.5px solid var(--border);border-radius:7px;padding:7px 11px;display:flex;align-items:center;gap:7px;margin-bottom:18px}
+.sb-search input{background:none;border:none;outline:none;font-family:var(--mono);font-size:11px;color:var(--white);width:100%;caret-color:var(--blue-b)}
+.sb-search input::placeholder{color:var(--silver3)}
+.sb-heading{font-size:9px;letter-spacing:.12em;text-transform:uppercase;margin-bottom:6px;padding:0 4px}
+.sb-item{display:flex;align-items:center;gap:7px;font-size:11px;color:var(--silver3);padding:5px 8px;border-radius:5px;cursor:pointer;transition:all .12s;margin-bottom:1px}
+.sb-item:hover{color:var(--silver);background:var(--black2)}
+.sb-item.active{color:inherit;background:inherit}
+.sb-dot{width:4px;height:4px;background:currentColor;border-radius:50%;flex-shrink:0}
+.sb-cnt{margin-left:auto;font-size:9px;background:var(--border);border-radius:3px;padding:1px 5px;color:var(--silver3)}
+.sb-div{height:.5px;background:var(--border);margin:12px 0}
+/* func list */
+.func-list{padding:20px 24px;border-right:.5px solid var(--border)}
+.list-bar{display:flex;align-items:center;gap:8px;margin-bottom:16px;padding-bottom:14px;border-bottom:.5px solid var(--border);flex-wrap:wrap}
+.list-title{font-family:var(--display);font-size:15px;font-weight:600;color:var(--white)}
+.list-count{font-size:10px;color:var(--silver3);margin-left:4px}
+.lvl-pills{display:flex;gap:5px;margin-left:auto}
+.lvl-pill{font-size:10px;font-family:var(--mono);padding:3px 9px;border-radius:100px;border:.5px solid var(--border2);color:var(--silver3);background:none;cursor:pointer;transition:all .12s}
+.lvl-pill:hover{color:var(--silver)}
+.lvl-pill.active{color:inherit;background:inherit}
+/* func card */
+.fc{background:var(--black2);border:.5px solid var(--border);border-radius:9px;padding:14px 16px;margin-bottom:7px;cursor:pointer;transition:border-color .18s,transform .15s,background .18s;position:relative;overflow:hidden}
+.fc::before{content:'';position:absolute;left:0;top:0;bottom:0;width:2px;opacity:0;transition:opacity .18s}
+.fc:hover{transform:translateX(3px);border-color:var(--border2)}
+.fc:hover::before,.fc.sel::before{opacity:1}
+.fc.sel{border-color:rgba(59,130,246,.3);background:rgba(37,99,235,.04)}
+.fc-top{display:flex;align-items:center;gap:8px;margin-bottom:5px}
+.fc-name{font-size:13px;font-weight:500;font-family:var(--mono)}
+.fc-badge{font-size:9px;padding:2px 6px;border-radius:4px;font-weight:600;text-transform:uppercase;letter-spacing:.05em}
+.fc-live{margin-left:auto;font-size:9px;color:var(--green);border:.5px solid rgba(34,197,94,.25);border-radius:3px;padding:2px 6px}
+.fc-desc{font-size:11px;color:var(--silver3);line-height:1.6}
+.fc-tags{display:flex;gap:5px;margin-top:7px;flex-wrap:wrap}
+.fc-tag{font-size:9px;color:var(--silver3);background:var(--border);border-radius:3px;padding:1px 6px}
+/* detail panel */
+.detail{padding:22px 20px;position:sticky;top:58px;height:calc(100vh - 58px);overflow-y:auto}
+.detail::-webkit-scrollbar{width:3px}
+.detail::-webkit-scrollbar-thumb{background:var(--border2)}
+.detail-empty{display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;color:var(--silver3);text-align:center;gap:10px}
+.detail-empty-icon{font-size:34px;opacity:.3}
+.detail-empty-txt{font-size:11px;line-height:1.7;max-width:200px}
+.d-fn{font-family:var(--display);font-size:20px;font-weight:700;letter-spacing:-.02em;margin-bottom:5px}
+.d-row{display:flex;align-items:center;gap:7px;margin-bottom:10px}
+.d-desc{font-size:12px;color:var(--silver2);line-height:1.8;margin-bottom:20px}
+.d-sec{margin-bottom:18px}
+.d-sec-title{font-size:9px;color:var(--blue-b);letter-spacing:.12em;text-transform:uppercase;margin-bottom:8px;display:flex;align-items:center;gap:8px}
+.d-sec-title::after{content:'';flex:1;height:.5px;background:var(--border)}
+.code-block{background:var(--black);border:.5px solid var(--border2);border-radius:7px;padding:13px 15px;font-size:11px;line-height:1.85;position:relative;overflow:auto}
+.code-block pre{margin:0;white-space:pre-wrap;word-break:break-word;font-family:var(--mono)}
+.code-copy{position:absolute;top:7px;right:7px;font-size:10px;color:var(--silver3);background:var(--border);border:none;border-radius:4px;padding:3px 8px;cursor:pointer;font-family:var(--mono);transition:all .15s}
+.code-copy:hover{color:var(--silver);background:var(--border2)}
+.out-block{background:var(--black);border:.5px solid var(--border);border-left:2px solid var(--green);border-radius:0 7px 7px 0;padding:10px 13px;font-size:11px;color:#86efac;line-height:1.7}
+.out-lbl{font-size:9px;color:var(--silver3);text-transform:uppercase;letter-spacing:.1em;margin-bottom:3px}
+.params-tbl{width:100%;border-collapse:collapse;font-size:11px}
+.params-tbl th{text-align:left;color:var(--silver3);padding:4px 7px;border-bottom:.5px solid var(--border);font-weight:400;font-size:9px;letter-spacing:.06em;text-transform:uppercase}
+.params-tbl td{padding:6px 7px;border-bottom:.5px solid var(--border);vertical-align:top}
+.params-tbl tr:last-child td{border-bottom:none}
+.p-nm{color:#fb923c;font-family:var(--mono)}
+.p-ty{color:#c084fc;font-size:10px}
+.p-dc{color:var(--silver3)}
+.p-opt{font-size:9px;color:var(--silver3);background:var(--border);border-radius:3px;padding:1px 5px}
+.tip-box{background:var(--blue-dim);border:.5px solid rgba(59,130,246,.2);border-radius:7px;padding:11px 13px;font-size:11px;color:var(--silver2);line-height:1.75}
+.tip-box strong{color:var(--blue-b);font-weight:500}
+.related-chips{display:flex;flex-wrap:wrap;gap:5px}
+.rel-chip{font-size:11px;border-radius:5px;padding:3px 9px;cursor:pointer;transition:all .15s;border:.5px solid transparent}
+.try-btn{display:flex;align-items:center;gap:7px;justify-content:center;width:100%;padding:9px;border-radius:7px;font-size:12px;font-family:var(--mono);cursor:pointer;transition:all .2s;margin-top:6px;border:.5px solid transparent}
+.try-btn:hover{transform:translateY(-1px)}
+
+/* ═══ PLAYGROUND VIEW ═══ */
+.pg-wrap{max-width:1100px;margin:0 auto;padding:36px 32px 60px}
+.pg-header{margin-bottom:28px}
+.pg-title{font-family:var(--display);font-size:clamp(28px,4vw,46px);font-weight:800;color:var(--white);letter-spacing:-.04em;margin-bottom:8px}
+.pg-title .acc{color:var(--blue-b)}
+.pg-sub{font-size:12px;color:var(--silver2);line-height:1.75}
+.pg-lang-tabs{display:flex;gap:6px;margin-bottom:20px;flex-wrap:wrap}
+.pg-tab{font-family:var(--mono);font-size:11px;padding:7px 14px;border-radius:6px;border:.5px solid var(--border2);color:var(--silver3);background:none;cursor:pointer;transition:all .15s;display:flex;align-items:center;gap:6px}
+.pg-tab:hover{color:var(--silver)}
+.pg-tab.active{color:#fff;background:var(--blue);border-color:var(--blue)}
+.pg-main{display:grid;grid-template-columns:1fr 1fr;gap:0;border:.5px solid var(--border2);border-radius:12px;overflow:hidden;min-height:480px}
+.pg-editor-wrap{display:flex;flex-direction:column;border-right:.5px solid var(--border)}
+.pg-topbar{background:var(--black3);border-bottom:.5px solid var(--border);padding:9px 14px;display:flex;align-items:center;gap:6px}
+.pg-dot{width:9px;height:9px;border-radius:50%}
+.pg-dot.r{background:#ef4444}
+.pg-dot.y{background:#eab308}
+.pg-dot.g{background:#22c55e}
+.pg-filename{margin-left:8px;font-size:11px;color:var(--silver3)}
+.pg-run{margin-left:auto;background:var(--blue);border:none;border-radius:5px;padding:5px 12px;font-size:11px;font-family:var(--mono);color:#fff;cursor:pointer;transition:background .15s}
+.pg-run:hover{background:#1d4ed8}
+.pg-editor{flex:1;background:var(--black);padding:0}
+#pg-textarea{width:100%;height:100%;min-height:420px;background:var(--black);color:var(--white2);font-family:var(--mono);font-size:12px;line-height:1.9;border:none;outline:none;padding:16px;resize:none;tab-size:2;caret-color:var(--blue-b)}
+.pg-output-wrap{display:flex;flex-direction:column;background:var(--black)}
+.pg-out-bar{background:var(--black3);border-bottom:.5px solid var(--border);padding:9px 14px;display:flex;align-items:center;gap:8px;font-size:11px;color:var(--silver3)}
+.pg-out-dot{width:6px;height:6px;border-radius:50%;background:var(--green)}
+.pg-preview{flex:1;background:#fff;border:none;min-height:420px;width:100%}
+.pg-console{background:var(--black);border-top:.5px solid var(--border);padding:10px 14px;font-size:11px;font-family:var(--mono);color:#86efac;min-height:60px;max-height:100px;overflow-y:auto}
+.pg-snippets{margin-top:24px}
+.pg-snip-title{font-size:12px;color:var(--silver2);margin-bottom:12px}
+.snip-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:8px}
+.snip-card{background:var(--black2);border:.5px solid var(--border);border-radius:8px;padding:12px;cursor:pointer;transition:all .15s}
+.snip-card:hover{border-color:var(--border2);transform:translateY(-2px)}
+.snip-name{font-size:11px;color:var(--white);margin-bottom:4px;font-family:var(--mono)}
+.snip-desc{font-size:10px;color:var(--silver3)}
+
+/* ═══ SYNTAX COLORS ═══ */
+.sk{color:#c084fc}.sf{color:#60a5fa}.ss{color:#86efac}.sn{color:#fbbf24}.sc{color:var(--silver3);font-style:italic}.sa{color:#fb923c}
+
+/* ═══ REVEAL ANIMATION ═══ */
+.reveal{opacity:0;transform:translateY(20px);transition:opacity .55s ease,transform .55s ease}
+.reveal.visible{opacity:1;transform:translateY(0)}
+.rv1{transition-delay:.08s}.rv2{transition-delay:.16s}.rv3{transition-delay:.24s}
+
+/* ═══ RESPONSIVE ═══ */
+@media(max-width:900px){
+  .plat-grid{grid-template-columns:repeat(3,1fr)}
+  .plat-layout{grid-template-columns:1fr}
+  .plat-sb,.detail{display:none}
+  .feats{grid-template-columns:1fr 1fr}
+  .pg-main{grid-template-columns:1fr}
+}
+@media(max-width:600px){
+  .feats{grid-template-columns:1fr}
+  .plat-grid{grid-template-columns:repeat(2,1fr)}
+  .nav-pills{display:none}
+  .hero-stats{gap:20px}
+}
+</style>
+</head>
+<body>
+
+<!-- ── CURSOR ── -->
+<div id="cur"></div>
+<div id="cur-r"></div>
+
+<!-- ══════════════════ SEARCH MODAL ══════════════════ -->
+<div id="s-overlay">
+  <div id="s-modal">
+    <div id="s-bar">
+      <span id="s-icon">⌕</span>
+      <input id="s-inp" type="text" placeholder="Search all functions across platforms..." autocomplete="off" spellcheck="false">
+      <span id="s-esc">ESC</span>
+    </div>
+    <div id="s-filters">
+      <button class="sf active" data-sf="all">All Platforms</button>
+      <button class="sf" data-sf="html">HTML</button>
+      <button class="sf" data-sf="css">CSS</button>
+      <button class="sf" data-sf="js">JavaScript</button>
+      <button class="sf" data-sf="py">Python</button>
+      <button class="sf" data-sf="react">React</button>
+      <button class="sf" data-sf="sql">SQL</button>
+    </div>
+    <div id="s-res"></div>
+    <div id="s-foot">
+      <div class="sfh"><span class="sfk">↑↓</span>navigate</div>
+      <div class="sfh"><span class="sfk">↵</span>open</div>
+      <div class="sfh"><span class="sfk">ESC</span>close</div>
+      <span id="s-count"></span>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════ NAV ══════════════════ -->
+<nav id="nav">
+  <div class="nav-logo" onclick="go('home')">
+    <div class="logo-mark">D</div>
+    DevDen <span class="by">by Ram</span>
+  </div>
+  <div class="nav-pills">
+    <button class="nav-pill" data-nav="html" onclick="go('html')"><span class="pip" style="background:var(--html)"></span>HTML</button>
+    <button class="nav-pill" data-nav="css" onclick="go('css')"><span class="pip" style="background:var(--css)"></span>CSS</button>
+    <button class="nav-pill" data-nav="js" onclick="go('js')"><span class="pip" style="background:var(--js)"></span>JS</button>
+    <button class="nav-pill" data-nav="py" onclick="go('py')"><span class="pip" style="background:var(--py)"></span>Python</button>
+    <button class="nav-pill" data-nav="react" onclick="go('react')"><span class="pip" style="background:var(--react)"></span>React</button>
+    <button class="nav-pill" data-nav="sql" onclick="go('sql')"><span class="pip" style="background:var(--sql)"></span>SQL</button>
+  </div>
+  <div class="nav-search" onclick="openSearch()">⌕ Search functions... <kbd>⌘K</kbd></div>
+  <button class="nav-btn" onclick="go('playground')">Playground →</button>
+</nav>
+
+<!-- ══════════════════ PAGE ══════════════════ -->
+<div id="page">
+
+  <!-- ─── HOME ─── -->
+  <div class="view active" id="view-home">
+    <div class="hero">
+      <div class="hero-grid"></div>
+      <div class="hero-orb"></div>
+      <div class="hero-badge"><div class="badge-pulse"></div>learn.ramsrinivasan.in — free for everyone</div>
+      <h1 class="hero-title">One Den for<br><span class="acc">every function</span><br><span class="dim">you'll ever need.</span></h1>
+      <p class="hero-sub">HTML · CSS · JavaScript · Python · React · SQL<br>All in one place. Built for vibe coders who learn by doing.</p>
+      <div class="hero-actions">
+        <button class="btn-p" onclick="go('js')">Start exploring →</button>
+        <button class="btn-o" onclick="go('playground')">Open playground</button>
+      </div>
+      <div class="hero-stats">
+        <div class="stat"><span class="stat-n">700+</span><span class="stat-l">functions documented</span></div>
+        <div class="stat"><span class="stat-n">6</span><span class="stat-l">platforms covered</span></div>
+        <div class="stat"><span class="stat-n">live</span><span class="stat-l">in-browser editor</span></div>
+        <div class="stat"><span class="stat-n">0</span><span class="stat-l">setup required</span></div>
+      </div>
+    </div>
+
+    <div class="plat-grid-wrap">
+      <div class="plat-grid">
+        <div class="p-card html reveal rv1" onclick="go('html')"><span class="p-icon">🔶</span><span class="p-name">HTML</span><span class="p-count" id="hc-html">— tags</span></div>
+        <div class="p-card css reveal rv1" onclick="go('css')"><span class="p-icon">🎨</span><span class="p-name">CSS</span><span class="p-count" id="hc-css">— properties</span></div>
+        <div class="p-card js reveal rv2" onclick="go('js')"><span class="p-icon">⚡</span><span class="p-name">JavaScript</span><span class="p-count" id="hc-js">— methods</span></div>
+        <div class="p-card py reveal rv2" onclick="go('py')"><span class="p-icon">🐍</span><span class="p-name">Python</span><span class="p-count" id="hc-py">— builtins</span></div>
+        <div class="p-card react reveal rv3" onclick="go('react')"><span class="p-icon">⚛️</span><span class="p-name">React</span><span class="p-count" id="hc-react">— hooks/apis</span></div>
+        <div class="p-card sql reveal rv3" onclick="go('sql')"><span class="p-icon">🗄️</span><span class="p-name">SQL</span><span class="p-count" id="hc-sql">— commands</span></div>
+      </div>
+    </div>
+
+    <div class="section">
+      <span class="sec-tag reveal">// why devden</span>
+      <h2 class="sec-title reveal rv1">Everything a vibe coder needs.</h2>
+      <p class="sec-sub reveal rv2">No fluff, no walls of text. Clean references, live examples, and a playground to try everything.</p>
+      <div class="feats">
+        <div class="feat hl reveal rv1"><div class="feat-ico">⚡</div><div class="feat-t">Live Code Playground</div><p class="feat-d">Write HTML, CSS, JS right in the browser. See output instantly — no install, no setup ever.</p></div>
+        <div class="feat reveal rv2"><div class="feat-ico">🔍</div><div class="feat-t">Instant ⌘K Search</div><p class="feat-d">Search across all 700+ functions from every platform at once. Results as you type.</p></div>
+        <div class="feat reveal rv3"><div class="feat-ico">📋</div><div class="feat-t">One-Click Copy</div><p class="feat-d">Every function has a clean snippet ready to copy. Paste straight into your project.</p></div>
+        <div class="feat reveal rv1"><div class="feat-ico">🗂️</div><div class="feat-t">All 6 Platforms</div><p class="feat-d">HTML, CSS, JS, Python, React, SQL — switch platforms in a single click. Everything together.</p></div>
+        <div class="feat reveal rv2"><div class="feat-ico">🎯</div><div class="feat-t">Vibe-Friendly Docs</div><p class="feat-d">Every function: plain-English one-liner, real use case, working example. Zero jargon.</p></div>
+        <div class="feat reveal rv3"><div class="feat-ico">📱</div><div class="feat-t">Works Everywhere</div><p class="feat-d">Single HTML file. Open it on any device. No internet needed after first load.</p></div>
+      </div>
+    </div>
+
+    <div class="cta-wrap">
+      <div class="cta-box reveal">
+        <div class="cta-t">Ready to <span class="acc">start vibing?</span></div>
+        <p class="cta-s">Explore 700+ functions across every platform. No account needed.</p>
+        <div class="cta-btns">
+          <button class="btn-p" onclick="go('js')">Explore functions →</button>
+          <button class="btn-o" onclick="go('playground')">Open playground</button>
+        </div>
+      </div>
+    </div>
+
+    <footer>
+      <div class="foot-logo">DevDen <span>by Ram — your coding den</span></div>
+      <span class="foot-lk" onclick="go('html')">HTML</span>
+      <span class="foot-lk" onclick="go('css')">CSS</span>
+      <span class="foot-lk" onclick="go('js')">JavaScript</span>
+      <span class="foot-lk" onclick="go('py')">Python</span>
+      <span class="foot-lk" onclick="go('react')">React</span>
+      <span class="foot-lk" onclick="go('sql')">SQL</span>
+      <span class="foot-domain">learn.ramsrinivasan.in</span>
+    </footer>
+  </div>
+
+  <!-- ─── PLATFORM VIEWS (rendered by JS) ─── -->
+  <div class="view" id="view-html"></div>
+  <div class="view" id="view-css"></div>
+  <div class="view" id="view-js"></div>
+  <div class="view" id="view-py"></div>
+  <div class="view" id="view-react"></div>
+  <div class="view" id="view-sql"></div>
+
+  <!-- ─── PLAYGROUND ─── -->
+  <div class="view" id="view-playground">
+    <div class="pg-wrap">
+      <div class="pg-header">
+        <div class="pg-title">Vibe <span class="acc">Playground</span></div>
+        <p class="pg-sub">Write code, see the output live. HTML + CSS + JS supported in-browser. No setup, no installs.</p>
+      </div>
+      <div class="pg-lang-tabs" id="pg-tabs">
+        <button class="pg-tab active" data-lang="html">🔶 HTML + CSS + JS</button>
+        <button class="pg-tab" data-lang="css">🎨 CSS Sandbox</button>
+        <button class="pg-tab" data-lang="js">⚡ JS Console</button>
+      </div>
+      <div class="pg-main">
+        <div class="pg-editor-wrap">
+          <div class="pg-topbar">
+            <div class="pg-dot r"></div><div class="pg-dot y"></div><div class="pg-dot g"></div>
+            <span class="pg-filename" id="pg-fname">index.html</span>
+            <button class="pg-run" onclick="runCode()">▶ Run</button>
+          </div>
+          <div class="pg-editor">
+            <textarea id="pg-textarea" spellcheck="false" placeholder="Write your code here..."></textarea>
+          </div>
+        </div>
+        <div class="pg-output-wrap">
+          <div class="pg-out-bar"><div class="pg-out-dot"></div>Output Preview</div>
+          <iframe id="pg-preview" class="pg-preview" sandbox="allow-scripts"></iframe>
+          <div class="pg-console" id="pg-console">// console output appears here</div>
+        </div>
+      </div>
+      <div class="pg-snippets">
+        <div class="pg-snip-title">Quick start snippets — click to load:</div>
+        <div class="snip-grid" id="snip-grid"></div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- end #page -->
+
+<script>
+/* ══════════════════════════════════════════════════════════
+   DEVDEN COMPLETE DATA + APP ENGINE
+   All platforms, all functions, fully self-contained
+══════════════════════════════════════════════════════════ */
+
+/* ─── PLATFORM CONFIG ─── */
+const PLATFORMS = {
+  html:  { label:'HTML',       icon:'🔶', color:'var(--html)',  dim:'var(--html-dim)',  accent:'#f97316' },
+  css:   { label:'CSS',        icon:'🎨', color:'var(--css)',   dim:'var(--css-dim)',   accent:'#a78bfa' },
+  js:    { label:'JavaScript', icon:'⚡', color:'var(--js)',    dim:'var(--js-dim)',    accent:'#eab308' },
+  py:    { label:'Python',     icon:'🐍', color:'var(--py)',    dim:'var(--py-dim)',    accent:'#10b981' },
+  react: { label:'React',      icon:'⚛️', color:'var(--react)', dim:'var(--react-dim)', accent:'#06b6d4' },
+  sql:   { label:'SQL',        icon:'🗄️', color:'var(--sql)',   dim:'var(--sql-dim)',   accent:'#f87171' },
+};
+
+/* ─── FULL FUNCTION DATABASE ─── */
+const DB = {
+
+html: [
+  {name:'<div>',cat:'structure',level:'beginner',desc:'Generic block-level container for grouping and styling content.',syntax:'<div class="card">\n  <p>Content here</p>\n</div>',output:'Block container rendered',params:[],tips:'The most commonly used HTML element. Alone it has no visual style — use CSS to give it meaning.',related:['<span>','<section>','<article>'],tags:['block','container','layout']},
+  {name:'<span>',cat:'inline',level:'beginner',desc:'Inline container used to apply styles or scripts to part of text.',syntax:'<p>Hello <span class="highlight">world</span>!</p>',output:'Inline text wrapper rendered',params:[],tips:'Unlike <div>, span does not break line flow. Perfect for coloring or styling a word within a sentence.',related:['<div>','<p>','<strong>'],tags:['inline','text','style']},
+  {name:'<p>',cat:'text',level:'beginner',desc:'Defines a paragraph of text. Browsers add margin above and below by default.',syntax:'<p>This is a paragraph of text.</p>',output:'Paragraph with top/bottom margin',params:[],tips:'Screen readers announce paragraphs distinctly — use them semantically, not just for spacing.',related:['<h1>-<h6>','<br>','<blockquote>'],tags:['text','paragraph','semantic']},
+  {name:'<a>',cat:'links',level:'beginner',desc:'Creates a hyperlink to another URL, file, email, or anchor.',syntax:'<a href="https://learn.ramsrinivasan.in" target="_blank">DevDen</a>',output:'Clickable hyperlink rendered',params:[{n:'href',t:'string',d:'URL destination',opt:false},{n:'target',t:'string',d:'_blank opens new tab',opt:true}],tips:'Always add rel="noopener noreferrer" when using target="_blank" to prevent tab-napping security issues.',related:['<button>','<nav>','href'],tags:['link','navigation','url']},
+  {name:'<img>',cat:'media',level:'beginner',desc:'Embeds an image. It is a void element — no closing tag needed.',syntax:'<img src="photo.jpg" alt="A scenic mountain" width="400">',output:'Image rendered on page',params:[{n:'src',t:'string',d:'Image URL or path',opt:false},{n:'alt',t:'string',d:'Accessibility description',opt:false}],tips:'Always include alt text for accessibility and SEO. Use lazy loading with loading="lazy" on below-fold images.',related:['<figure>','<picture>','<video>'],tags:['media','image','visual']},
+  {name:'<input>',cat:'forms',level:'beginner',desc:'Creates an interactive form control — text, checkbox, button, range, and more.',syntax:'<input type="text" placeholder="Enter name" id="name">\n<input type="checkbox" checked>\n<input type="range" min="0" max="100">',output:'Interactive form control rendered',params:[{n:'type',t:'string',d:'text|email|password|checkbox|radio|range|file|color',opt:false},{n:'placeholder',t:'string',d:'Hint text',opt:true},{n:'required',t:'boolean',d:'Marks field as required',opt:true}],tips:'Use type="email" and type="tel" for mobile — they trigger the right keyboard layout on phones.',related:['<form>','<label>','<select>'],tags:['forms','input','interactive']},
+  {name:'<form>',cat:'forms',level:'beginner',desc:'Defines a form for collecting user input. Wraps all form controls.',syntax:'<form action="/submit" method="POST">\n  <input type="text" name="username">\n  <button type="submit">Send</button>\n</form>',output:'Form element wrapping inputs',params:[{n:'action',t:'string',d:'URL to send data to',opt:true},{n:'method',t:'string',d:'GET or POST',opt:true}],tips:'Use method="POST" for sensitive data. With JS, you can prevent default submission and handle it yourself with fetch().',related:['<input>','<button>','<label>'],tags:['forms','submit','data']},
+  {name:'<button>',cat:'forms',level:'beginner',desc:'A clickable button element for triggering actions or submitting forms.',syntax:'<button type="button" onclick="alert(\'Clicked!\')">Click Me</button>',output:'Clickable button rendered',params:[{n:'type',t:'string',d:'button|submit|reset',opt:true}],tips:'Default type inside a form is "submit". Always set type="button" for JS-only actions to prevent accidental form submission.',related:['<input>','<a>','addEventListener'],tags:['forms','click','interactive']},
+  {name:'<ul> & <li>',cat:'lists',level:'beginner',desc:'Unordered list container with list items — renders as bullet points.',syntax:'<ul>\n  <li>HTML</li>\n  <li>CSS</li>\n  <li>JavaScript</li>\n</ul>',output:'Bulleted list rendered',params:[],tips:'Use CSS list-style: none to remove bullets and use flexbox/grid to build navbars from semantic lists.',related:['<ol>','<li>','<nav>'],tags:['list','unordered','semantic']},
+  {name:'<ol>',cat:'lists',level:'beginner',desc:'Ordered list — renders as numbered list. Use for step-by-step instructions.',syntax:'<ol>\n  <li>First step</li>\n  <li>Second step</li>\n</ol>',output:'Numbered list rendered',params:[{n:'start',t:'number',d:'Starting number',opt:true},{n:'reversed',t:'boolean',d:'Count down',opt:true}],tips:'The start attribute lets you begin numbering from any number — useful for multi-part tutorials.',related:['<ul>','<li>','<dl>'],tags:['list','ordered','steps']},
+  {name:'<table>',cat:'tables',level:'intermediate',desc:'Creates a data table. Use for tabular data, not layout.',syntax:'<table>\n  <thead>\n    <tr><th>Name</th><th>Score</th></tr>\n  </thead>\n  <tbody>\n    <tr><td>Ram</td><td>100</td></tr>\n  </tbody>\n</table>',output:'Table rendered with rows and columns',params:[],tips:'Always use <thead> and <tbody> for accessibility. Never use tables for page layout — use CSS Grid instead.',related:['<tr>','<th>','<td>'],tags:['table','data','grid']},
+  {name:'<section>',cat:'semantic',level:'beginner',desc:'Defines a thematic grouping of content, typically with a heading.',syntax:'<section>\n  <h2>About DevDen</h2>\n  <p>One place for all functions.</p>\n</section>',output:'Semantic section block rendered',params:[],tips:'Each section should ideally have a heading. For generic containers without semantic meaning, use <div>.',related:['<article>','<header>','<main>'],tags:['semantic','section','layout']},
+  {name:'<header>',cat:'semantic',level:'beginner',desc:'Represents introductory content — site logo, nav, or section header.',syntax:'<header>\n  <nav>...</nav>\n  <h1>DevDen by Ram</h1>\n</header>',output:'Header landmark rendered',params:[],tips:'You can have multiple <header> elements on a page — one for the site, one per article/section.',related:['<footer>','<nav>','<main>'],tags:['semantic','header','nav']},
+  {name:'<footer>',cat:'semantic',level:'beginner',desc:'Footer for the page or nearest section — copyright, links, author info.',syntax:'<footer>\n  <p>&copy; 2025 Ram. Built with love.</p>\n</footer>',output:'Footer landmark rendered',params:[],tips:'Like header, footer can appear multiple times — once for the page, and inside articles for authorship info.',related:['<header>','<aside>','<nav>'],tags:['semantic','footer','landmark']},
+  {name:'<nav>',cat:'semantic',level:'beginner',desc:'Container for the major navigation links of a page.',syntax:'<nav>\n  <a href="#home">Home</a>\n  <a href="#about">About</a>\n</nav>',output:'Navigation landmark rendered',params:[],tips:'Screen readers use <nav> as a landmark — only wrap major link groups, not every set of links.',related:['<a>','<header>','<ul>'],tags:['nav','links','landmark']},
+  {name:'<main>',cat:'semantic',level:'beginner',desc:'The dominant unique content of the document. Only one per page.',syntax:'<main>\n  <h1>Welcome to DevDen</h1>\n  <p>Your learning hub.</p>\n</main>',output:'Main content landmark',params:[],tips:'A page should have only one <main>. Skip-to-main links for keyboard users point to this element.',related:['<section>','<article>','<aside>'],tags:['semantic','main','landmark']},
+  {name:'<video>',cat:'media',level:'intermediate',desc:'Embeds a video player with native browser controls.',syntax:'<video controls width="640" autoplay muted>\n  <source src="demo.mp4" type="video/mp4">\n  Your browser does not support video.\n</video>',output:'Native video player rendered',params:[{n:'src',t:'string',d:'Video file URL',opt:true},{n:'controls',t:'boolean',d:'Show player controls',opt:true},{n:'autoplay',t:'boolean',d:'Play on load (needs muted)',opt:true}],tips:'Autoplay only works when paired with muted — browsers block unmuted autoplay to prevent jarring experiences.',related:['<audio>','<source>','<track>'],tags:['media','video','embed']},
+  {name:'<canvas>',cat:'graphics',level:'advanced',desc:'A bitmap drawing surface — used with JS Canvas API for 2D/3D graphics, games, charts.',syntax:'<canvas id="myCanvas" width="400" height="300"></canvas>\n<script>\n  const ctx = document.getElementById(\'myCanvas\').getContext(\'2d\');\n  ctx.fillStyle = \'#2563eb\';\n  ctx.fillRect(10, 10, 100, 80);\n</script>',output:'Custom graphics rendered via JS',params:[{n:'width',t:'number',d:'Canvas pixel width',opt:false},{n:'height',t:'number',d:'Canvas pixel height',opt:false}],tips:'canvas coordinates start at top-left (0,0). For crisp retina displays, multiply width/height by devicePixelRatio.',related:['<svg>','getContext()','requestAnimationFrame()'],tags:['graphics','drawing','canvas']},
+  {name:'<meta>',cat:'document',level:'beginner',desc:'Provides metadata about the HTML document — charset, viewport, SEO tags.',syntax:'<meta charset="UTF-8">\n<meta name="viewport" content="width=device-width, initial-scale=1.0">\n<meta name="description" content="DevDen by Ram">',output:'(no visual output — affects browser/SEO)',params:[{n:'charset',t:'string',d:'Character encoding — use UTF-8',opt:true},{n:'name',t:'string',d:'viewport, description, keywords',opt:true}],tips:'The viewport meta tag is essential for mobile responsiveness. Without it, mobile browsers zoom out and render at 980px.',related:['<head>','<link>','<title>'],tags:['document','SEO','head']},
+  {name:'<link>',cat:'document',level:'beginner',desc:'Defines relationships between HTML and external resources — mainly CSS files.',syntax:'<link rel="stylesheet" href="styles.css">\n<link rel="icon" href="favicon.ico">',output:'(links external resource — no visual)',params:[{n:'rel',t:'string',d:'stylesheet, icon, preconnect',opt:false},{n:'href',t:'string',d:'Path to the resource',opt:false}],tips:'Use rel="preconnect" for third-party origins (like Google Fonts) to start the DNS lookup early and speed up loading.',related:['<meta>','<script>','<style>'],tags:['document','CSS','resource']},
+  {name:'data-* attributes',cat:'attributes',level:'intermediate',desc:'Custom HTML attributes for storing extra data on elements, accessible via JS dataset.',syntax:'<div data-user-id="42" data-role="admin">Ram</div>\n<script>\n  const el = document.querySelector(\'div\');\n  console.log(el.dataset.userId); // "42"\n</script>',output:'"42" logged to console',params:[],tips:'data-user-id becomes dataset.userId — hyphens convert to camelCase. Great for passing config to JS without hidden inputs.',related:['getAttribute()','dataset','addEventListener'],tags:['attributes','data','custom']},
+],
+
+css: [
+  {name:'display',cat:'layout',level:'beginner',desc:'Controls how an element is rendered in the layout flow.',syntax:'/* Options: block, inline, inline-block, flex, grid, none */\n.container { display: flex; }\n.hidden    { display: none; }',output:'Element layout behavior changes',params:[],tips:'"display: none" removes from DOM flow entirely. Use "visibility: hidden" to hide but preserve space.',related:['flex','grid','position'],tags:['layout','box model','rendering']},
+  {name:'flexbox',cat:'layout',level:'beginner',desc:'One-dimensional layout system for distributing space and aligning items in a row or column.',syntax:'.container {\n  display: flex;\n  justify-content: center;\n  align-items: center;\n  gap: 16px;\n}',output:'Items aligned in a flexible row',params:[],tips:'"justify-content" aligns along the main axis, "align-items" along the cross axis. Switch them with flex-direction: column.',related:['grid','gap','flex-wrap'],tags:['layout','flexbox','alignment']},
+  {name:'grid',cat:'layout',level:'intermediate',desc:'Two-dimensional layout system for complex page structures using rows and columns.',syntax:'.grid {\n  display: grid;\n  grid-template-columns: repeat(3, 1fr);\n  gap: 20px;\n}',output:'3-column equal grid rendered',params:[],tips:'fr is a fractional unit — 1fr takes equal share of remaining space. Use minmax(0, 1fr) to prevent overflow.',related:['flexbox','grid-area','auto-fit'],tags:['layout','grid','2d']},
+  {name:'position',cat:'layout',level:'intermediate',desc:'Controls element positioning — static, relative, absolute, fixed, or sticky.',syntax:'.tooltip {\n  position: absolute;\n  top: -40px;\n  left: 50%;\n  transform: translateX(-50%);\n}',output:'Element positioned absolutely to parent',params:[],tips:'Absolute elements position relative to their nearest positioned ancestor (not static). Add position: relative to the parent.',related:['z-index','top/left/right/bottom','transform'],tags:['layout','position','layers']},
+  {name:'margin & padding',cat:'box model',level:'beginner',desc:'margin is space outside the border; padding is space inside between border and content.',syntax:'.card {\n  margin: 0 auto;       /* center horizontally */\n  padding: 24px 32px;   /* vertical horizontal */\n}',output:'Spacing applied inside and outside element',params:[],tips:'margin: 0 auto horizontally centers block elements. Use gap in flex/grid instead of margins between items.',related:['border','box-sizing','display'],tags:['box model','spacing','margin']},
+  {name:'border',cat:'box model',level:'beginner',desc:'Defines border around an element — width, style (required), and color.',syntax:'.card {\n  border: 1px solid #243044;\n  border-radius: 12px;\n  border-left: 4px solid #3b82f6; /* accent */\n}',output:'Border rendered around element',params:[],tips:'Style (solid, dashed, dotted) is required — "border: 1px #000" without a style renders nothing.',related:['border-radius','outline','box-shadow'],tags:['border','outline','visual']},
+  {name:'border-radius',cat:'visual',level:'beginner',desc:'Rounds element corners. Can create circles and pill shapes.',syntax:'.card   { border-radius: 12px; }   /* rounded */\n.pill   { border-radius: 100px; }  /* pill */\n.circle { border-radius: 50%; }    /* circle */\n.asym   { border-radius: 12px 0; } /* top-left & bottom-right */',output:'Rounded corners applied',params:[],tips:'border-radius: 50% only makes a perfect circle when width === height. Pill shape works with any width.',related:['border','clip-path','overflow'],tags:['visual','border','shape']},
+  {name:'color & background',cat:'typography',level:'beginner',desc:'color sets text color; background sets fill color, image, or gradient.',syntax:'.hero {\n  color: #e2e8f0;\n  background: #06070d;\n  background: linear-gradient(135deg, #06070d, #0a0c14);\n}',output:'Text and background colors applied',params:[],tips:'CSS named colors (red, blue) are fine for quick tests but use hex, hsl, or rgb for production. hsl() is great for theme variants.',related:['opacity','background-image','text-shadow'],tags:['color','background','visual']},
+  {name:'font-size & font-weight',cat:'typography',level:'beginner',desc:'font-size sets text size; font-weight sets thickness (100–900).',syntax:'.title { font-size: clamp(28px, 5vw, 60px); font-weight: 700; }\n.body  { font-size: 1rem; font-weight: 400; }',output:'Text sized and weighted',params:[],tips:'clamp(min, preferred, max) creates fluid responsive type that scales between a min and max without breakpoints.',related:['line-height','letter-spacing','font-family'],tags:['typography','font','text']},
+  {name:'transition',cat:'animation',level:'beginner',desc:'Smoothly animates property changes over a given duration.',syntax:'.btn {\n  background: #2563eb;\n  transition: background 0.2s ease, transform 0.15s ease;\n}\n.btn:hover {\n  background: #1d4ed8;\n  transform: translateY(-2px);\n}',output:'Smooth hover animation',params:[],tips:'Be specific — transition: all is convenient but can accidentally animate properties like height causing layout thrash.',related:['animation','transform','@keyframes'],tags:['animation','transition','hover']},
+  {name:'animation & @keyframes',cat:'animation',level:'intermediate',desc:'Defines multi-step CSS animations that run automatically.',syntax:'@keyframes fade-in {\n  from { opacity: 0; transform: translateY(20px); }\n  to   { opacity: 1; transform: translateY(0); }\n}\n.hero {\n  animation: fade-in 0.6s ease forwards;\n}',output:'Element fades and slides up on load',params:[],tips:'Use animation-fill-mode: forwards to keep the final state. Use animation-delay to stagger multiple elements.',related:['transition','transform','@keyframes'],tags:['animation','keyframes','motion']},
+  {name:'transform',cat:'animation',level:'beginner',desc:'Applies 2D/3D transformations — rotate, scale, translate, skew.',syntax:'.card:hover {\n  transform: translateY(-4px) scale(1.02);\n}\n.icon {\n  transform: rotate(45deg);\n}',output:'Element moved/scaled/rotated',params:[],tips:'Transform does NOT affect document flow — other elements do not shift. Use it freely for hover effects and animations.',related:['transition','animation','perspective'],tags:['transform','motion','visual']},
+  {name:'z-index',cat:'layout',level:'intermediate',desc:'Controls stacking order of positioned elements. Higher = in front.',syntax:'.modal   { z-index: 1000; position: fixed; }\n.overlay { z-index: 999;  position: fixed; }\n.nav     { z-index: 500;  position: fixed; }',output:'Elements stacked in correct order',params:[],tips:'z-index only works on positioned elements (not static). Create a z-index scale (100, 200...) rather than z-index: 9999.',related:['position','overflow','isolation'],tags:['z-index','stacking','layers']},
+  {name:'overflow',cat:'layout',level:'beginner',desc:'Controls what happens when content is larger than its container.',syntax:'.container { overflow: hidden; }  /* clip */\n.scroll    { overflow: auto; }    /* scrollbar if needed */\n.ellipsis  {\n  overflow: hidden;\n  white-space: nowrap;\n  text-overflow: ellipsis;\n}',output:'Overflow behavior changed',params:[],tips:'overflow: hidden clips content AND creates a new block formatting context, which can fix float-related layout issues.',related:['clip-path','scroll','text-overflow'],tags:['layout','overflow','scroll']},
+  {name:'CSS variables (custom properties)',cat:'advanced',level:'intermediate',desc:'Define reusable values with -- prefix, reference with var().',syntax:':root {\n  --primary: #2563eb;\n  --radius: 12px;\n}\n.btn {\n  background: var(--primary);\n  border-radius: var(--radius);\n}',output:'Consistent theme applied via variables',params:[],tips:'CSS variables are live — change them on :root with JS and the whole page updates instantly. Perfect for dark mode toggling.',related:['@media prefers-color-scheme','calc()','inherit'],tags:['variables','theming','custom properties']},
+  {name:'media queries',cat:'responsive',level:'beginner',desc:'Apply CSS rules only when conditions match — like screen width or dark mode preference.',syntax:'@media (max-width: 768px) {\n  .nav-pills { display: none; }\n  .grid { grid-template-columns: 1fr; }\n}\n@media (prefers-color-scheme: dark) {\n  body { background: #000; }\n}',output:'Layout adjusts at breakpoints',params:[],tips:'Design mobile-first: write base styles for small screens, add @media (min-width: ...) for larger screens.',related:['viewport meta','CSS variables','clamp()'],tags:['responsive','breakpoints','mobile']},
+  {name:'box-shadow',cat:'visual',level:'beginner',desc:'Adds one or more shadow effects to an element.',syntax:'.card {\n  box-shadow: 0 4px 24px rgba(0,0,0,0.3);\n}\n.glow {\n  box-shadow: 0 0 20px rgba(37,99,235,0.4);\n}\n/* inset shadow */\n.inset { box-shadow: inset 0 2px 6px rgba(0,0,0,0.2); }',output:'Shadow rendered around element',params:[],tips:'Multiple shadows are comma-separated. Inset creates inner shadows. Avoid overusing — one well-chosen shadow beats five.',related:['filter: drop-shadow','border','opacity'],tags:['shadow','visual','depth']},
+  {name:'pseudo-classes & pseudo-elements',cat:'selectors',level:'intermediate',desc:'Pseudo-classes (:hover, :focus) target element states. Pseudo-elements (::before, ::after) add virtual child elements.',syntax:'.btn:hover  { background: #1d4ed8; }\n.input:focus { outline: 2px solid #3b82f6; }\n.card::before {\n  content: \'\';\n  display: block;\n  height: 2px;\n  background: var(--primary);\n}',output:'State-based and injected styles',params:[],tips:'::before and ::after require content: "" to render, even if empty. They are the key to CSS-only decorative elements.',related:['transition',':nth-child','attr()'],tags:['pseudo','selectors','state']},
+  {name:'clamp()',cat:'responsive',level:'intermediate',desc:'Returns a value clamped between min and max, scaling fluidly with viewport.',syntax:'h1 {\n  font-size: clamp(28px, 5vw, 64px);\n  padding: clamp(20px, 4%, 60px);\n}',output:'Fluid font size that scales with viewport',params:[{n:'min',t:'length',d:'Smallest value',opt:false},{n:'preferred',t:'length/calc',d:'Ideal value (often vw-based)',opt:false},{n:'max',t:'length',d:'Largest value',opt:false}],tips:'Eliminates most typography breakpoints. Use it for font-size, padding, gap — anything that should scale smoothly.',related:['min()','max()','media queries'],tags:['responsive','fluid','type']},
+  {name:'gap',cat:'layout',level:'beginner',desc:'Sets spacing between flex or grid items. Replaces margin hacks.',syntax:'.flex { display: flex; gap: 16px; }\n.grid { display: grid; gap: 24px 16px; } /* row col */\n.nav  { display: flex; gap: 8px; }',output:'Spacing between items applied cleanly',params:[],tips:'gap works on flex and grid. Unlike margin, it does not add space before the first or after the last item.',related:['margin','padding','flexbox'],tags:['layout','spacing','gap']},
+],
+
+js: [
+  {name:'querySelector()',cat:'dom',level:'beginner',desc:'Returns the first element matching a CSS selector.',syntax:"const el = document.querySelector('.card');\nconst btn = document.querySelector('#submit');",output:'HTMLElement reference',params:[{n:'selector',t:'string',d:'CSS selector string',opt:false}],tips:'Returns null (not undefined) if no match. querySelector(\'#id\') is slower than getElementById but far more flexible.',related:['querySelectorAll()','getElementById()','classList'],tags:['DOM','selector','element']},
+  {name:'querySelectorAll()',cat:'dom',level:'beginner',desc:'Returns all matching elements as a static NodeList.',syntax:"const cards = document.querySelectorAll('.card');\ncards.forEach(card => card.classList.add('visible'));",output:'NodeList of matching elements',params:[{n:'selector',t:'string',d:'CSS selector',opt:false}],tips:'NodeList is not an Array. Use Array.from() or spread [...els] to use array methods like filter() and map().',related:['querySelector()','Array.from()','forEach()'],tags:['DOM','NodeList','selector']},
+  {name:'addEventListener()',cat:'events',level:'beginner',desc:'Registers an event handler on an element.',syntax:"btn.addEventListener('click', (e) => {\n  console.log('clicked!', e.target);\n});\n// Remove it:\nbtn.removeEventListener('click', handler);",output:'Event fires on user interaction',params:[{n:'type',t:'string',d:'click, input, keydown, scroll, etc.',opt:false},{n:'listener',t:'function',d:'Handler function',opt:false},{n:'options',t:'object',d:'{once, capture, passive}',opt:true}],tips:'Use {once: true} to auto-remove after first trigger. Passive: true improves scroll performance on touch events.',related:['removeEventListener()','event.preventDefault()','dispatchEvent()'],tags:['events','DOM','listener']},
+  {name:'fetch()',cat:'async',level:'intermediate',desc:'Makes HTTP requests and returns a Promise resolving to a Response.',syntax:"const res = await fetch('https://api.example.com/data');\nif (!res.ok) throw new Error(`HTTP ${res.status}`);\nconst data = await res.json();",output:'Parsed JSON response object',params:[{n:'url',t:'string',d:'Request URL',opt:false},{n:'options',t:'object',d:'method, headers, body, etc.',opt:true}],tips:'Fetch never rejects on HTTP errors (404, 500) — only network failure. Always check res.ok before parsing.',related:['async/await','Promise','Response.json()'],tags:['HTTP','async','API']},
+  {name:'async / await',cat:'async',level:'intermediate',desc:'Makes asynchronous code read synchronously. await pauses inside an async function.',syntax:"async function loadUser(id) {\n  try {\n    const res = await fetch(`/api/users/${id}`);\n    return await res.json();\n  } catch (err) {\n    console.error('Failed:', err);\n  }\n}",output:'Promise that resolves to user data',params:[],tips:'await can only be used inside async functions. An async function always returns a Promise implicitly.',related:['fetch()','Promise','Promise.all()'],tags:['async','promise','ES6']},
+  {name:'map()',cat:'arrays',level:'beginner',desc:'Creates a new array by transforming every element with a callback.',syntax:"const nums = [1, 2, 3];\nconst doubled = nums.map(n => n * 2);     // [2, 4, 6]\nconst names = users.map(u => u.name);      // ['Ram', 'Dev']",output:'New transformed array',params:[{n:'callback',t:'function',d:'(element, index, array) => newValue',opt:false}],tips:'map() never mutates the original. It always returns a new array of the same length — use filter() to reduce length.',related:['filter()','reduce()','forEach()'],tags:['array','transform','functional']},
+  {name:'filter()',cat:'arrays',level:'beginner',desc:'Creates a new array with only elements that pass the test function.',syntax:"const evens = [1,2,3,4,5].filter(n => n % 2 === 0); // [2, 4]\nconst active = users.filter(u => u.isActive);",output:'New filtered array',params:[{n:'callback',t:'function',d:'Return true to keep element',opt:false}],tips:'Chain with map(): users.filter(u => u.active).map(u => u.name) — filter first to reduce work for map.',related:['map()','find()','some()'],tags:['array','filter','functional']},
+  {name:'reduce()',cat:'arrays',level:'intermediate',desc:'Reduces an array to a single value by accumulating through a callback.',syntax:"const total = [1,2,3,4].reduce((acc, n) => acc + n, 0); // 10\nconst byId = users.reduce((acc, u) => ({ ...acc, [u.id]: u }), {});",output:'Single accumulated value',params:[{n:'callback',t:'function',d:'(accumulator, current, index) => next',opt:false},{n:'initialValue',t:'any',d:'Starting accumulator value',opt:true}],tips:'Always provide initialValue — without it, reduce on an empty array throws. It can replicate map AND filter in one pass.',related:['map()','filter()','Object.fromEntries()'],tags:['array','reduce','functional']},
+  {name:'forEach()',cat:'arrays',level:'beginner',desc:'Executes a callback for each array element. Returns undefined.',syntax:"['a','b','c'].forEach((item, i) => {\n  console.log(i, item);\n});",output:'Side effects executed per element',params:[{n:'callback',t:'function',d:'(element, index, array)',opt:false}],tips:'Cannot be broken out of with break. Use for...of if you need early exit. Use map() if you want return values.',related:['map()','for...of','entries()'],tags:['array','iteration','loop']},
+  {name:'find() & findIndex()',cat:'arrays',level:'beginner',desc:'find() returns the first matching element; findIndex() returns its index.',syntax:"const user = users.find(u => u.id === 42);\nconst idx  = users.findIndex(u => u.id === 42);",output:'Element or index (or undefined/-1)',params:[{n:'callback',t:'function',d:'Return true when target found',opt:false}],tips:'Both return undefined/-1 if not found. Unlike filter(), they stop at the first match — efficient for large arrays.',related:['filter()','some()','includes()'],tags:['array','search','find']},
+  {name:'Promise.all()',cat:'async',level:'intermediate',desc:'Runs multiple promises in parallel and waits for all to resolve.',syntax:"const [users, posts, comments] = await Promise.all([\n  fetch('/api/users').then(r => r.json()),\n  fetch('/api/posts').then(r => r.json()),\n  fetch('/api/comments').then(r => r.json()),\n]);",output:'Array of all resolved values',params:[{n:'promises',t:'Array<Promise>',d:'Promises to run in parallel',opt:false}],tips:'Fails fast — one rejection rejects all. Use Promise.allSettled() when you want results even if some fail.',related:['async/await','fetch()','Promise.allSettled()'],tags:['async','parallel','promise']},
+  {name:'JSON.stringify() & parse()',cat:'data',level:'beginner',desc:'stringify() converts JS to JSON string; parse() converts JSON string back to JS.',syntax:"const json = JSON.stringify({ name: 'Ram', score: 100 });\n// '{\"name\":\"Ram\",\"score\":100}'\nconst obj  = JSON.parse(json);\n// { name: 'Ram', score: 100 }",output:'Serialized / deserialized value',params:[],tips:'stringify(obj, null, 2) pretty-prints with 2-space indentation. Always try/catch parse() — invalid JSON throws SyntaxError.',related:['localStorage','fetch()','structuredClone()'],tags:['JSON','data','serialize']},
+  {name:'localStorage',cat:'storage',level:'beginner',desc:'Key-value browser storage that persists across sessions with no expiry.',syntax:"localStorage.setItem('theme', 'dark');\nconst theme = localStorage.getItem('theme'); // 'dark'\nlocalStorage.removeItem('theme');\n// Store objects:\nlocalStorage.setItem('user', JSON.stringify(user));",output:'Data stored/retrieved from browser',params:[],tips:'Values are always strings — JSON.stringify() before storing objects, JSON.parse() when retrieving.',related:['sessionStorage','JSON.stringify()','cookies'],tags:['storage','persist','browser']},
+  {name:'setTimeout & setInterval',cat:'timing',level:'beginner',desc:'setTimeout calls once after delay; setInterval calls repeatedly at interval.',syntax:"const id = setTimeout(() => console.log('once'), 2000);\nclearTimeout(id); // cancel\n\nconst tick = setInterval(() => console.log('tick'), 1000);\nclearInterval(tick); // stop",output:'Delayed / repeated function execution',params:[{n:'callback',t:'function',d:'Function to execute',opt:false},{n:'delay',t:'number',d:'Milliseconds',opt:false}],tips:'Always store the ID and clear it when done. For animations use requestAnimationFrame() instead — it syncs to display refresh.',related:['clearTimeout()','requestAnimationFrame()','debounce'],tags:['timing','delay','interval']},
+  {name:'Array spread & destructuring',cat:'arrays',level:'beginner',desc:'Spread (...) expands iterables; destructuring unpacks values into variables.',syntax:"const arr = [1, 2, 3];\nconst copy = [...arr, 4];        // [1,2,3,4]\nconst [first, ...rest] = arr;    // 1, [2,3]\nconst { name, age = 25 } = user; // with default\nconst { name: userName } = user; // rename",output:'Unpacked / expanded values',params:[],tips:'Destructuring works in function params: function show({ name, age }) {...}. Spread creates shallow copies only.',related:['Object.assign()','Array.from()','rest params'],tags:['ES6','destructuring','spread']},
+  {name:'classList',cat:'dom',level:'beginner',desc:'API to add, remove, toggle, and check CSS classes on elements.',syntax:"el.classList.add('active');\nel.classList.remove('hidden');\nel.classList.toggle('open');\nel.classList.contains('active'); // true\nel.classList.replace('old', 'new');",output:'CSS class applied/removed on element',params:[],tips:'toggle() returns true if class was added, false if removed. Useful for boolean state: const isOpen = el.classList.toggle(\'menu\').',related:['querySelector()','style','getAttribute()'],tags:['DOM','CSS','class']},
+  {name:'Object.keys/values/entries()',cat:'objects',level:'beginner',desc:'Extract keys, values, or [key,value] pairs from an object as arrays.',syntax:"const obj = { a: 1, b: 2, c: 3 };\nObject.keys(obj);    // ['a','b','c']\nObject.values(obj);  // [1, 2, 3]\nObject.entries(obj); // [['a',1],['b',2],['c',3]]\n// Iterate:\nObject.entries(obj).forEach(([k, v]) => console.log(k, v));",output:"Array of keys / values / pairs",params:[],tips:'Object.fromEntries() is the reverse — converts [key, value] pairs back to an object. Great for transforming objects.',related:['map()','reduce()','for...in'],tags:['object','iteration','keys']},
+  {name:'Math methods',cat:'math',level:'beginner',desc:'Math object provides constants and methods for mathematical operations.',syntax:"Math.round(4.6);     // 5\nMath.floor(4.9);     // 4\nMath.ceil(4.1);      // 5\nMath.random();       // 0 to 0.999...\nMath.max(3, 7, 1);   // 7\nMath.abs(-5);        // 5\nMath.pow(2, 10);     // 1024",output:'Numeric results',params:[],tips:'Random integer: Math.floor(Math.random() * max). For arrays: Math.max(...arr) using spread.',related:['parseFloat()','parseInt()','Number()'],tags:['math','number','calculation']},
+  {name:'String methods',cat:'strings',level:'beginner',desc:'Common string operations — split, replace, trim, includes, and template literals.',syntax:"'Hello World'.toLowerCase();          // 'hello world'\n'  spaces  '.trim();                  // 'spaces'\n'a,b,c'.split(',');                   // ['a','b','c']\n'hello'.includes('ell');              // true\n'DevDen'.slice(0, 3);                // 'Dev'\n`Hello, ${name}! Score: ${score}`    // template literal",output:'Transformed string value',params:[],tips:'Strings are immutable — all methods return new strings. Template literals (backticks) support multi-line and expressions.',related:['replace()','padStart()','RegExp'],tags:['string','text','manipulation']},
+  {name:'event.preventDefault()',cat:'events',level:'beginner',desc:"Cancels the browser's default action for an event.",syntax:"form.addEventListener('submit', (e) => {\n  e.preventDefault(); // stop page reload\n  handleForm();\n});\nlink.addEventListener('click', (e) => {\n  e.preventDefault(); // stop navigation\n});",output:'Default browser behavior cancelled',params:[],tips:'Does not stop event bubbling — that is stopPropagation(). Both can be used together.',related:['stopPropagation()','addEventListener()','submit event'],tags:['events','forms','browser']},
+  {name:'console methods',cat:'debug',level:'beginner',desc:'Browser debugging tools — log, warn, error, table, time.',syntax:"console.log('Value:', x);\nconsole.warn('Warning!');\nconsole.error('Error occurred');\nconsole.table([{ name:'Ram', score:100 }]);\nconsole.time('loop');\n// ...code...\nconsole.timeEnd('loop'); // 'loop: 2.3ms'",output:'Output in browser dev tools',params:[],tips:'console.table() is massively underused — it renders arrays of objects as a sortable table in DevTools.',related:['typeof','debugger','performance.now()'],tags:['debug','console','devtools']},
+],
+
+py: [
+  {name:'print()',cat:'output',level:'beginner',desc:'Outputs values to the terminal or console.',syntax:"print('Hello, DevDen!')\nprint('Name:', name, 'Score:', 100)\nprint(f'Hello {name}!')   # f-string\nprint('Line1\\nLine2')     # newline\nprint('A', 'B', sep='-') # A-B",output:'Text printed to stdout',params:[{n:'*values',t:'any',d:'Values to print',opt:false},{n:'sep',t:'str',d:'Separator between values (default space)',opt:true},{n:'end',t:'str',d:'End character (default newline)',opt:true}],tips:'f-strings (f"Hello {name}") are the modern way to format strings. They are faster and more readable than .format().',related:['input()','str()','format()'],tags:['output','print','f-string']},
+  {name:'input()',cat:'input',level:'beginner',desc:'Reads a line from standard input. Always returns a string.',syntax:"name = input('Enter your name: ')\nage  = int(input('Enter age: '))  # convert to int\nprint(f'Hello {name}, you are {age}!')",output:'String from user input',params:[{n:'prompt',t:'str',d:'Message shown to user',opt:true}],tips:'input() always returns a string. Always convert with int(), float(), etc. when you need a number.',related:['print()','int()','float()'],tags:['input','user','prompt']},
+  {name:'len()',cat:'builtins',level:'beginner',desc:'Returns the number of items in an object — string length, list size, dict size.',syntax:"len('hello')         # 5\nlen([1, 2, 3])      # 3\nlen({'a': 1})       # 1 (number of keys)\nlen((1, 2, 3, 4))   # 4 (tuple)",output:'Integer count',params:[{n:'obj',t:'iterable',d:'String, list, tuple, dict, set, etc.',opt:false}],tips:'You cannot call len() on a number — it raises TypeError. Check type first if working with dynamic data.',related:['range()','enumerate()','count()'],tags:['builtins','length','count']},
+  {name:'range()',cat:'iteration',level:'beginner',desc:'Generates a sequence of integers, commonly used in for loops.',syntax:"for i in range(5):          # 0, 1, 2, 3, 4\n    print(i)\nfor i in range(1, 6):       # 1, 2, 3, 4, 5\n    print(i)\nfor i in range(0, 10, 2):   # 0, 2, 4, 6, 8 (step)\n    print(i)\nnums = list(range(5))       # [0,1,2,3,4]",output:'Sequence of integers',params:[{n:'stop',t:'int',d:'End value (exclusive)',opt:false},{n:'start',t:'int',d:'Start value (default 0)',opt:true},{n:'step',t:'int',d:'Increment (default 1)',opt:true}],tips:'range() is lazy — it does not create the full list in memory, making it memory-efficient for large ranges.',related:['enumerate()','list()','for loop'],tags:['iteration','range','loop']},
+  {name:'list comprehension',cat:'lists',level:'intermediate',desc:'Concise way to create lists using a for loop inside brackets.',syntax:"squares = [x**2 for x in range(6)]     # [0,1,4,9,16,25]\nevens   = [x for x in range(10) if x%2 == 0]\nnames   = [u['name'] for u in users]\nnested  = [i*j for i in range(3) for j in range(3)]",output:'New list from expression',params:[],tips:'More readable and faster than equivalent for-loop + append(). Can include conditions: [x for x in nums if x > 0].',related:['map()','filter()','generator expression'],tags:['lists','comprehension','functional']},
+  {name:'dict comprehension',cat:'collections',level:'intermediate',desc:'Creates dictionaries in one line using a comprehension syntax.',syntax:"squares = {x: x**2 for x in range(5)}\n# {0:0, 1:1, 2:4, 3:9, 4:16}\nfiltered = {k: v for k, v in data.items() if v > 0}\nswapped  = {v: k for k, v in original.items()}",output:'New dictionary from expression',params:[],tips:'Great for inverting dictionaries, filtering, or transforming. Pair with .items() to iterate key-value pairs.',related:['dict()','items()','list comprehension'],tags:['dict','comprehension','functional']},
+  {name:'enumerate()',cat:'iteration',level:'beginner',desc:'Adds a counter to an iterable, returning (index, value) pairs.',syntax:"fruits = ['apple', 'banana', 'cherry']\nfor i, fruit in enumerate(fruits):\n    print(i, fruit)     # 0 apple, 1 banana...\nfor i, fruit in enumerate(fruits, start=1):\n    print(i, fruit)     # 1 apple, 2 banana...",output:'(index, value) pairs on each iteration',params:[{n:'iterable',t:'iterable',d:'List, tuple, string, etc.',opt:false},{n:'start',t:'int',d:'Starting index (default 0)',opt:true}],tips:'Cleaner than using range(len(items)) and indexing manually. Always prefer enumerate() for index+value loops.',related:['range()','zip()','for loop'],tags:['iteration','enumerate','index']},
+  {name:'zip()',cat:'iteration',level:'intermediate',desc:'Pairs elements from multiple iterables together into tuples.',syntax:"names  = ['Ram', 'Dev', 'Vibe']\nscores = [100, 85, 92]\nfor name, score in zip(names, scores):\n    print(f'{name}: {score}')\npairs = list(zip(names, scores))  # [('Ram',100), ...]",output:'Paired tuples from multiple iterables',params:[{n:'*iterables',t:'iterable',d:'Two or more iterables',opt:false}],tips:'zip() stops at the shortest iterable. Use itertools.zip_longest() to pad shorter ones with a fillvalue.',related:['enumerate()','map()','dict()'],tags:['iteration','zip','pairs']},
+  {name:'open() & file I/O',cat:'files',level:'intermediate',desc:'Opens a file for reading or writing. Best used with the with statement.',syntax:"# Read\nwith open('data.txt', 'r') as f:\n    content = f.read()         # full file\n    lines   = f.readlines()    # list of lines\n# Write\nwith open('out.txt', 'w') as f:\n    f.write('Hello DevDen!\\n')",output:'File content read or written',params:[{n:'file',t:'str',d:'File path',opt:false},{n:'mode',t:'str',d:"'r' read, 'w' write, 'a' append, 'rb' binary",opt:false}],tips:"Always use 'with' statement — it automatically closes the file even if an error occurs. 'a' mode appends; 'w' overwrites.",related:['read()','readlines()','json.load()'],tags:['files','IO','read/write']},
+  {name:'try / except',cat:'errors',level:'beginner',desc:'Handles errors gracefully instead of crashing the program.',syntax:"try:\n    result = int(input('Enter a number: '))\n    print(10 / result)\nexcept ValueError:\n    print('Not a number!')\nexcept ZeroDivisionError:\n    print('Cannot divide by zero!')\nexcept Exception as e:\n    print(f'Unexpected error: {e}')\nelse:\n    print('Success!')\nfinally:\n    print('Always runs')",output:'Graceful error handling',params:[],tips:'Catch specific exceptions before broad ones. The else block runs only if no exception occurred. finally always runs.',related:['raise','Exception','logging'],tags:['errors','exception','try/except']},
+  {name:'def & functions',cat:'functions',level:'beginner',desc:'Define reusable blocks of code with parameters and return values.',syntax:"def greet(name, greeting='Hello'):  # default param\n    return f'{greeting}, {name}!'\n\ngreet('Ram')           # 'Hello, Ram!'\ngreet('Dev', 'Hi')     # 'Hi, Dev!'\n\n# *args and **kwargs\ndef show(*args, **kwargs):\n    print(args, kwargs)",output:'Reusable function defined',params:[],tips:'Default arguments are evaluated once at definition time — never use mutable defaults like def f(lst=[]). Use None instead.',related:['lambda','return','*args'],tags:['functions','def','reusable']},
+  {name:'lambda',cat:'functions',level:'intermediate',desc:'Anonymous one-liner function, often used with map(), filter(), sorted().',syntax:"double = lambda x: x * 2\ndouble(5)   # 10\n\nsorted(users, key=lambda u: u['age'])\nfiltered = filter(lambda x: x > 0, nums)\nresult   = map(lambda x: x**2, nums)",output:'Inline function result',params:[],tips:'For anything more complex than a single expression, use a def. Readability matters more than being terse.',related:['def','map()','sorted()'],tags:['lambda','functional','anonymous']},
+  {name:'sorted() & sort()',cat:'lists',level:'beginner',desc:'sorted() returns a new sorted list; list.sort() sorts in place.',syntax:"nums = [3, 1, 4, 1, 5]\nnew  = sorted(nums)               # [1,1,3,4,5] — original unchanged\nnums.sort()                       # mutates original\nnums.sort(reverse=True)           # descending\nusers = sorted(users, key=lambda u: u['age'])",output:'Sorted list',params:[{n:'iterable',t:'iterable',d:'Items to sort',opt:false},{n:'key',t:'function',d:'Key function for comparison',opt:true},{n:'reverse',t:'bool',d:'Descending if True',opt:true}],tips:'sorted() works on any iterable; list.sort() is faster in place. Use key= for custom comparison — never cmp=.',related:['min()','max()','list.reverse()'],tags:['sort','list','functional']},
+  {name:'dictionary methods',cat:'collections',level:'beginner',desc:'Built-in dict methods — get(), items(), keys(), values(), update(), pop().',syntax:"d = {'name': 'Ram', 'score': 100}\nd.get('age', 0)     # 0 (safe, no KeyError)\nd.items()           # dict_items([('name','Ram')...])\nd.keys()            # dict_keys(['name','score'])\nd.update({'age': 25})\nd.pop('score')      # removes and returns 100",output:'Dictionary operations performed',params:[],tips:"dict.get(key, default) is safer than d[key] which raises KeyError. Use d.get(key) everywhere unless KeyError is intentional.",related:['dict comprehension','json','defaultdict'],tags:['dict','keys','values']},
+  {name:'f-strings',cat:'strings',level:'beginner',desc:'Formatted string literals — embed expressions directly inside strings.',syntax:"name = 'Ram'\nscore = 99.5\nprint(f'Hello, {name}!')              # Hello, Ram!\nprint(f'Score: {score:.1f}')          # Score: 99.5\nprint(f'2 + 2 = {2 + 2}')            # 2 + 2 = 4\nprint(f'{name!r}')                    # 'Ram' (repr)",output:"Formatted string with embedded values",params:[],tips:'f-strings support full expressions: f"{len(name)} chars". Use :.2f for floats, :,d for comma-separated numbers.',related:['str.format()','print()','repr()'],tags:['strings','formatting','f-string']},
+  {name:'classes & OOP',cat:'oop',level:'intermediate',desc:'Define blueprints for objects with attributes and methods.',syntax:"class Dog:\n    def __init__(self, name, breed):\n        self.name  = name\n        self.breed = breed\n    def speak(self):\n        return f'{self.name} says Woof!'\n\n# Inheritance\nclass GoldenRetriever(Dog):\n    def fetch(self):\n        return 'Fetching!'\n\ndog = GoldenRetriever('Buddy', 'Golden')\ndog.speak()   # 'Buddy says Woof!'",output:'Object with methods and attributes',params:[],tips:"__init__ is the constructor. self is the instance reference. Use @property for computed attributes and @classmethod for factory methods.",related:['__init__','inheritance','@property'],tags:['OOP','class','object']},
+  {name:'list methods',cat:'lists',level:'beginner',desc:'Built-in list operations — append, extend, insert, remove, pop, index.',syntax:"lst = [1, 2, 3]\nlst.append(4)          # [1,2,3,4]\nlst.extend([5, 6])     # [1,2,3,4,5,6]\nlst.insert(0, 0)       # [0,1,2,3,4,5,6]\nlst.remove(3)          # removes first 3\nlst.pop()              # removes & returns last\nlst.index(2)           # finds position of 2",output:'List mutated or value returned',params:[],tips:'append() adds one item; extend() unpacks an iterable and adds all items. pop(0) is O(n) — use collections.deque for efficient front removal.',related:['sorted()','list comprehension','enumerate()'],tags:['list','append','mutate']},
+  {name:'import & modules',cat:'modules',level:'beginner',desc:'Import built-in or third-party modules to extend Python.',syntax:"import os\nimport json\nimport math\nfrom datetime import datetime\nfrom pathlib import Path\nfrom collections import defaultdict, Counter\n\nprint(math.pi)            # 3.14159\nprint(datetime.now())     # current time",output:'Module functions available',params:[],tips:'Use "from module import name" to import specific items. Alias long names: import numpy as np. Group stdlib, then third-party, then local.',related:['pip','__init__.py','sys.path'],tags:['modules','import','stdlib']},
+  {name:'with statement',cat:'context',level:'intermediate',desc:'Context manager that automatically handles setup and teardown (like file closing).',syntax:"# File handling\nwith open('data.json') as f:\n    data = json.load(f)\n\n# Multiple contexts\nwith open('in.txt') as src, open('out.txt', 'w') as dst:\n    dst.write(src.read())\n\n# Custom context manager via @contextmanager\nfrom contextlib import contextmanager",output:'Resource automatically closed/released',params:[],tips:'Any object with __enter__ and __exit__ works. Use contextlib.contextmanager to turn a generator function into one.',related:['open()','threading.Lock()','tempfile'],tags:['context','files','cleanup']},
+],
+
+react: [
+  {name:'useState()',cat:'hooks',level:'beginner',desc:'Adds reactive state to a functional component. Triggers re-render on update.',syntax:"import { useState } from 'react';\n\nfunction Counter() {\n  const [count, setCount] = useState(0);\n  return (\n    <button onClick={() => setCount(c => c + 1)}>\n      Count: {count}\n    </button>\n  );\n}",output:'Component re-renders on state change',params:[{n:'initialState',t:'any',d:'Starting state value',opt:false}],tips:'Never mutate state directly. Use the functional form: setCount(c => c + 1) to avoid stale closures, especially in async code.',related:['useEffect()','useReducer()','Context'],tags:['hooks','state','reactive']},
+  {name:'useEffect()',cat:'hooks',level:'beginner',desc:'Runs side effects after render — data fetching, subscriptions, DOM mutations.',syntax:"import { useEffect, useState } from 'react';\n\nuseEffect(() => {\n  fetch('/api/data').then(r => r.json()).then(setData);\n}, []);                // [] = run once on mount\n\nuseEffect(() => {\n  document.title = `Count: ${count}`;\n}, [count]);           // run when count changes\n\nuseEffect(() => {\n  const id = setInterval(fn, 1000);\n  return () => clearInterval(id); // cleanup\n}, []);",output:'Side effect executed after render',params:[{n:'effect',t:'function',d:'Side effect to run',opt:false},{n:'deps',t:'array',d:'Dependency array — what to watch',opt:true}],tips:'Missing deps cause stale closures; too many cause infinite loops. Use eslint-plugin-react-hooks to auto-check your deps.',related:['useState()','useLayoutEffect()','useRef()'],tags:['hooks','effects','lifecycle']},
+  {name:'useRef()',cat:'hooks',level:'intermediate',desc:'Returns a mutable ref object that persists across renders without causing re-renders.',syntax:"const inputRef = useRef(null);\nconst countRef  = useRef(0);    // persist value, no re-render\n\nreturn (\n  <>\n    <input ref={inputRef} />\n    <button onClick={() => inputRef.current.focus()}>\n      Focus Input\n    </button>\n  </>\n);",output:'Ref object with .current property',params:[{n:'initialValue',t:'any',d:'Initial .current value',opt:false}],tips:'Two use cases: 1) DOM references (inputRef.current.focus()), 2) Persist mutable values that do not need re-render (timers, intervals).',related:['useEffect()','useState()','forwardRef()'],tags:['hooks','ref','DOM']},
+  {name:'useContext()',cat:'hooks',level:'intermediate',desc:'Reads and subscribes to a React context — avoids prop drilling.',syntax:"// 1. Create context\nconst ThemeCtx = createContext('light');\n\n// 2. Provide it\nfunction App() {\n  return (\n    <ThemeCtx.Provider value=\"dark\">\n      <Page />\n    </ThemeCtx.Provider>\n  );\n}\n\n// 3. Consume it (anywhere in tree)\nfunction Button() {\n  const theme = useContext(ThemeCtx);\n  return <button className={theme}>Click</button>;\n}",output:'Context value consumed in component',params:[{n:'context',t:'Context',d:'Context object from createContext()',opt:false}],tips:'Component re-renders whenever context value changes. Split contexts by update frequency to avoid unnecessary re-renders.',related:['createContext()','useState()','useReducer()'],tags:['hooks','context','state']},
+  {name:'useMemo() & useCallback()',cat:'hooks',level:'advanced',desc:'useMemo memoizes a computed value; useCallback memoizes a function reference.',syntax:"// useMemo — expensive calculation\nconst filtered = useMemo(\n  () => items.filter(i => i.active),\n  [items]\n);\n\n// useCallback — stable function reference\nconst handleClick = useCallback((id) => {\n  dispatch({ type: 'SELECT', id });\n}, [dispatch]);",output:'Memoized value or function',params:[{n:'factory',t:'function',d:'Computation to memoize',opt:false},{n:'deps',t:'array',d:'When to recompute',opt:false}],tips:'Do NOT premature-optimize. Only add useMemo/useCallback when you measure a real performance problem. They add overhead.',related:['useEffect()','React.memo()','useReducer()'],tags:['hooks','performance','memo']},
+  {name:'useReducer()',cat:'hooks',level:'intermediate',desc:'Manages complex state logic with actions — like a mini Redux in a component.',syntax:"const initialState = { count: 0, step: 1 };\n\nfunction reducer(state, action) {\n  switch (action.type) {\n    case 'increment': return { ...state, count: state.count + state.step };\n    case 'setStep':   return { ...state, step: action.payload };\n    default: throw new Error('Unknown action');\n  }\n}\n\nconst [state, dispatch] = useReducer(reducer, initialState);\ndispatch({ type: 'increment' });",output:'State updated via dispatch',params:[{n:'reducer',t:'function',d:'(state, action) => newState',opt:false},{n:'initialState',t:'any',d:'Starting state',opt:false}],tips:'Prefer useReducer over multiple useState calls when state values are interdependent.',related:['useState()','useContext()','Redux'],tags:['hooks','reducer','state']},
+  {name:'props',cat:'core',level:'beginner',desc:'Read-only data passed from parent to child component.',syntax:"// Parent\nfunction App() {\n  return <Card name=\"Ram\" score={100} isActive={true} />;\n}\n\n// Child\nfunction Card({ name, score, isActive, onClick }) {\n  return (\n    <div onClick={onClick}>\n      <h2>{name}</h2>\n      <p>Score: {score}</p>\n      {isActive && <span>Active</span>}\n    </div>\n  );\n}",output:'Data flows parent → child',params:[],tips:'Props are read-only — never mutate them. For callbacks: pass functions as props (onSubmit, onClick). Use TypeScript for prop type safety.',related:['useState()','children','defaultProps'],tags:['props','data','parent/child']},
+  {name:'JSX',cat:'core',level:'beginner',desc:'HTML-like syntax that compiles to React.createElement() calls.',syntax:"// JSX (what you write)\nconst el = (\n  <div className=\"card\" style={{ color: 'blue' }}>\n    <h1>{title}</h1>\n    <p>{count > 0 ? 'Positive' : 'Zero'}</p>\n    {items.map(item => <li key={item.id}>{item.name}</li>)}\n  </div>\n);",output:'React elements rendered to DOM',params:[],tips:'className not class. htmlFor not for. Inline styles use camelCase objects. Every JSX expression must return a single root — use <> fragments.',related:['React.createElement()','Fragment','key prop'],tags:['JSX','syntax','components']},
+  {name:'React.memo()',cat:'performance',level:'intermediate',desc:'Higher-order component that skips re-render if props have not changed.',syntax:"const Card = React.memo(function Card({ name, score }) {\n  return <div>{name}: {score}</div>;\n});\n\n// Custom comparison\nconst Card = React.memo(Card, (prev, next) => {\n  return prev.id === next.id; // true = skip re-render\n});",output:'Component skips unnecessary re-render',params:[{n:'component',t:'function',d:'Component to memoize',opt:false},{n:'compare',t:'function',d:'Custom equality check',opt:true}],tips:'Only wrap components that receive the same props often and render expensively. Overuse adds overhead.',related:['useMemo()','useCallback()','shouldComponentUpdate'],tags:['performance','memo','optimization']},
+  {name:'key prop',cat:'core',level:'beginner',desc:'Unique identifier for list items that helps React reconcile DOM changes efficiently.',syntax:"// Correct — stable unique ID\nitems.map(item => <Card key={item.id} {...item} />)\n\n// Avoid — index as key (causes bugs on reorder)\nitems.map((item, i) => <Card key={i} {...item} />)",output:'React tracks items by key',params:[],tips:'Keys must be unique among siblings, not globally. Using index as key breaks animations, forms, and focus when list order changes.',related:['map()','useId()','reconciliation'],tags:['lists','key','reconciliation']},
+  {name:'custom hooks',cat:'hooks',level:'intermediate',desc:'Extract and reuse stateful logic into functions that start with "use".',syntax:"// Custom hook\nfunction useLocalStorage(key, initial) {\n  const [value, setValue] = useState(\n    () => JSON.parse(localStorage.getItem(key)) ?? initial\n  );\n  useEffect(() => {\n    localStorage.setItem(key, JSON.stringify(value));\n  }, [key, value]);\n  return [value, setValue];\n}\n\n// Usage\nconst [theme, setTheme] = useLocalStorage('theme', 'dark');",output:'Reusable stateful logic',params:[],tips:'Custom hooks must start with "use" — this is how React knows to enforce hooks rules. They can call other hooks.',related:['useState()','useEffect()','useRef()'],tags:['hooks','custom','reusable']},
+  {name:'useId()',cat:'hooks',level:'intermediate',desc:'Generates a stable unique ID — useful for accessibility attributes.',syntax:"import { useId } from 'react';\n\nfunction FormField({ label }) {\n  const id = useId();\n  return (\n    <>\n      <label htmlFor={id}>{label}</label>\n      <input id={id} />\n    </>\n  );\n}",output:'Unique stable ID string',params:[],tips:'IDs are stable across server and client renders (important for hydration). Do not use for list keys — use data IDs.',related:['useRef()','accessibility','htmlFor'],tags:['hooks','accessibility','id']},
+],
+
+sql: [
+  {name:'SELECT',cat:'query',level:'beginner',desc:'Retrieves rows from one or more tables.',syntax:"-- Basic select\nSELECT name, email FROM users;\n\n-- All columns\nSELECT * FROM products;\n\n-- With expression\nSELECT name, price * 1.1 AS price_with_tax FROM products;\n\n-- Distinct values\nSELECT DISTINCT country FROM users;",output:'Result set of rows',params:[{n:'columns',t:'list',d:'Column names or * for all',opt:false},{n:'FROM',t:'table',d:'Table to query',opt:false}],tips:'Avoid SELECT * in production — specify columns. It is clearer, faster on wide tables, and safe against schema changes.',related:['WHERE','JOIN','ORDER BY'],tags:['query','select','read']},
+  {name:'WHERE',cat:'filtering',level:'beginner',desc:'Filters rows based on a condition. Works with SELECT, UPDATE, DELETE.',syntax:"SELECT * FROM users WHERE age > 18;\nSELECT * FROM orders WHERE status = 'active' AND total > 100;\nSELECT * FROM products WHERE name LIKE 'Dev%';\nSELECT * FROM users WHERE country IN ('IN', 'US', 'UK');\nSELECT * FROM users WHERE email IS NOT NULL;",output:'Filtered rows matching condition',params:[{n:'condition',t:'expression',d:'Boolean expression to filter rows',opt:false}],tips:'LIKE is case-insensitive in MySQL; case-sensitive in PostgreSQL. Use ILIKE in PostgreSQL for case-insensitive LIKE.',related:['SELECT','AND/OR','IN'],tags:['filter','where','condition']},
+  {name:'JOIN',cat:'joins',level:'intermediate',desc:'Combines rows from multiple tables based on a related column.',syntax:"-- INNER JOIN (only matching rows)\nSELECT u.name, o.total\nFROM users u\nINNER JOIN orders o ON u.id = o.user_id;\n\n-- LEFT JOIN (all left rows + matched right)\nSELECT u.name, o.total\nFROM users u\nLEFT JOIN orders o ON u.id = o.user_id;",output:'Combined rows from multiple tables',params:[{n:'table',t:'string',d:'Table to join',opt:false},{n:'ON',t:'condition',d:'Join condition matching keys',opt:false}],tips:'INNER JOIN = intersection. LEFT JOIN = all left + matched right (NULLs where no match). Think of it with Venn diagrams.',related:['LEFT JOIN','GROUP BY','WHERE'],tags:['join','relational','tables']},
+  {name:'GROUP BY',cat:'aggregation',level:'intermediate',desc:'Groups rows with the same values — used with aggregate functions.',syntax:"SELECT country, COUNT(*) AS users\nFROM users\nGROUP BY country;\n\nSELECT category, SUM(price) AS total, AVG(price) AS avg\nFROM products\nGROUP BY category\nHAVING AVG(price) > 50;",output:'Summary rows with aggregated values',params:[],tips:'Every column in SELECT must either be in GROUP BY or wrapped in an aggregate function (COUNT, SUM, AVG, MAX, MIN).',related:['HAVING','COUNT()','SUM()'],tags:['aggregation','group','summary']},
+  {name:'ORDER BY',cat:'sorting',level:'beginner',desc:'Sorts the result set in ascending (ASC, default) or descending (DESC) order.',syntax:"SELECT name, score FROM leaderboard\nORDER BY score DESC;\n\nSELECT * FROM products\nORDER BY category ASC, price DESC;  -- multiple cols\n\nSELECT * FROM users\nORDER BY created_at DESC\nLIMIT 10;  -- latest 10",output:'Sorted result set',params:[{n:'column',t:'string',d:'Column(s) to sort by',opt:false},{n:'direction',t:'ASC|DESC',d:'Sort direction (default ASC)',opt:true}],tips:'Without ORDER BY, row order is not guaranteed — databases may return results in any order.',related:['LIMIT','SELECT','WHERE'],tags:['sort','order','ascending']},
+  {name:'INSERT INTO',cat:'mutation',level:'beginner',desc:'Inserts one or more new rows into a table.',syntax:"-- Single row\nINSERT INTO users (name, email, age)\nVALUES ('Ram', 'ram@devden.in', 25);\n\n-- Multiple rows\nINSERT INTO users (name, email)\nVALUES ('Dev', 'dev@devden.in'),\n       ('Vibe', 'vibe@devden.in');\n\n-- From another table\nINSERT INTO archive SELECT * FROM users WHERE inactive = 1;",output:'New row(s) added to table',params:[{n:'table',t:'string',d:'Target table name',opt:false},{n:'columns',t:'list',d:'Columns to populate',opt:false},{n:'VALUES',t:'values',d:'Row data matching columns',opt:false}],tips:'Always specify column names explicitly — avoids bugs when table schema changes.',related:['UPDATE','DELETE','RETURNING'],tags:['insert','create','mutation']},
+  {name:'UPDATE',cat:'mutation',level:'beginner',desc:'Modifies existing rows in a table.',syntax:"UPDATE users\nSET score = 100, updated_at = NOW()\nWHERE id = 42;\n\n-- Update multiple rows\nUPDATE products\nSET price = price * 1.1\nWHERE category = 'electronics';",output:'Rows modified in table',params:[{n:'table',t:'string',d:'Table to update',opt:false},{n:'SET',t:'assignments',d:'column = value pairs',opt:false},{n:'WHERE',t:'condition',d:'Rows to target (REQUIRED)',opt:false}],tips:'⚠ Always include WHERE — UPDATE without WHERE modifies every row in the table.',related:['WHERE','INSERT INTO','DELETE'],tags:['update','mutation','modify']},
+  {name:'DELETE',cat:'mutation',level:'beginner',desc:'Removes rows from a table based on a condition.',syntax:"DELETE FROM users WHERE id = 42;\n\n-- Delete all inactive\nDELETE FROM sessions WHERE expires_at < NOW();\n\n-- Soft delete (safer alternative)\nUPDATE users SET deleted_at = NOW() WHERE id = 42;",output:'Rows removed from table',params:[{n:'FROM',t:'table',d:'Table to delete from',opt:false},{n:'WHERE',t:'condition',d:'Rows to remove (REQUIRED)',opt:false}],tips:'⚠ DELETE without WHERE removes ALL rows. Use transactions (BEGIN/ROLLBACK) to safely test destructive queries.',related:['WHERE','TRUNCATE','UPDATE'],tags:['delete','mutation','remove']},
+  {name:'CREATE TABLE',cat:'schema',level:'intermediate',desc:'Creates a new table with defined columns, data types, and constraints.',syntax:"CREATE TABLE users (\n  id         SERIAL PRIMARY KEY,\n  name       VARCHAR(100) NOT NULL,\n  email      VARCHAR(255) UNIQUE NOT NULL,\n  age        INTEGER CHECK (age >= 0),\n  created_at TIMESTAMP DEFAULT NOW()\n);\n\n-- Only create if missing\nCREATE TABLE IF NOT EXISTS products (...);",output:'New table created in database',params:[],tips:'Use SERIAL or BIGSERIAL for auto-increment primary keys in PostgreSQL. MySQL uses AUTO_INCREMENT.',related:['ALTER TABLE','DROP TABLE','INDEX'],tags:['schema','DDL','create']},
+  {name:'Aggregate functions',cat:'aggregation',level:'beginner',desc:'COUNT, SUM, AVG, MAX, MIN — compute values across groups of rows.',syntax:"SELECT COUNT(*) FROM users;                    -- total rows\nSELECT COUNT(DISTINCT country) FROM users;     -- unique countries\nSELECT SUM(total) FROM orders WHERE paid = 1;\nSELECT AVG(score) FROM results;\nSELECT MAX(price), MIN(price) FROM products;",output:'Single aggregated value',params:[],tips:'COUNT(*) counts all rows including NULLs. COUNT(column) counts only non-NULL values — they can give different results.',related:['GROUP BY','HAVING','ROUND()'],tags:['aggregation','count','sum']},
+  {name:'LIMIT & OFFSET',cat:'query',level:'beginner',desc:'LIMIT restricts number of rows returned; OFFSET skips rows — used for pagination.',syntax:"-- First 10 rows\nSELECT * FROM products ORDER BY id LIMIT 10;\n\n-- Page 2 (rows 11-20)\nSELECT * FROM products\nORDER BY id\nLIMIT 10 OFFSET 10;\n\n-- MySQL: LIMIT offset, count\nSELECT * FROM products LIMIT 10, 10;",output:'Subset of result rows',params:[{n:'LIMIT',t:'number',d:'Max rows to return',opt:false},{n:'OFFSET',t:'number',d:'Rows to skip before returning',opt:true}],tips:'Always use ORDER BY with LIMIT/OFFSET — without ordering, the "page" you get back is non-deterministic.',related:['ORDER BY','SELECT','pagination pattern'],tags:['pagination','limit','offset']},
+  {name:'Subqueries',cat:'advanced',level:'advanced',desc:'A query nested inside another query — used in WHERE, FROM, or SELECT.',syntax:"-- In WHERE\nSELECT name FROM users\nWHERE id IN (SELECT user_id FROM orders WHERE total > 1000);\n\n-- In FROM (derived table)\nSELECT dept, avg_salary\nFROM (\n  SELECT department AS dept, AVG(salary) AS avg_salary\n  FROM employees\n  GROUP BY department\n) sub\nWHERE avg_salary > 50000;",output:'Nested query result used in outer query',params:[],tips:'CTEs (WITH clause) are often cleaner than subqueries and are more readable and reusable.',related:['JOIN','WITH (CTE)','EXISTS'],tags:['subquery','advanced','nested']},
+  {name:'Indexes',cat:'performance',level:'intermediate',desc:'Database structures that speed up SELECT queries at the cost of slower writes.',syntax:"-- Create index\nCREATE INDEX idx_users_email ON users(email);\n\n-- Unique index (also enforces uniqueness)\nCREATE UNIQUE INDEX idx_users_email ON users(email);\n\n-- Composite index\nCREATE INDEX idx_orders_user_date ON orders(user_id, created_at);\n\n-- Remove\nDROP INDEX idx_users_email;",output:'Faster query lookups on indexed columns',params:[],tips:'Index columns used in WHERE, JOIN ON, and ORDER BY. Too many indexes slow down INSERT/UPDATE. Use EXPLAIN ANALYZE to see if indexes are being used.',related:['CREATE TABLE','EXPLAIN','PRIMARY KEY'],tags:['performance','index','optimization']},
+],
+
+};// end DB
+
+/* ─── PLAYGROUND SNIPPETS ─── */
+const SNIPPETS = [
+  {name:'Blue Button',desc:'Styled button with hover',lang:'html',code:`<!DOCTYPE html>\n<html>\n<head>\n<style>\n  body { font-family: sans-serif; display: flex; justify-content: center; padding: 40px; background: #06070d; }\n  .btn {\n    background: #2563eb; color: white; border: none;\n    padding: 12px 28px; border-radius: 8px; font-size: 16px;\n    cursor: pointer; transition: background .2s, transform .15s;\n  }\n  .btn:hover { background: #1d4ed8; transform: translateY(-2px); }\n</style>\n</head>\n<body>\n  <button class="btn">Click Me! 🚀</button>\n</body>\n</html>`},
+  {name:'Flex Card',desc:'Card with flexbox layout',lang:'html',code:`<!DOCTYPE html>\n<html>\n<head>\n<style>\n  body { font-family: sans-serif; background: #0a0c14; display: flex; justify-content: center; padding: 40px; }\n  .card {\n    background: #0f1117; border: 1px solid #1a2236;\n    border-radius: 12px; padding: 24px; width: 280px;\n  }\n  .card h2 { color: #e2e8f0; font-size: 18px; margin-bottom: 8px; }\n  .card p  { color: #64748b; font-size: 13px; line-height: 1.6; }\n  .badge { background: rgba(37,99,235,.15); color: #3b82f6; font-size: 11px; padding: 4px 10px; border-radius: 100px; display: inline-block; margin-top: 12px; }\n</style>\n</head>\n<body>\n  <div class="card">\n    <h2>DevDen by Ram ⚡</h2>\n    <p>Your one-stop coding reference for HTML, CSS, JS, Python, React, and SQL.</p>\n    <span class="badge">Vibe coding</span>\n  </div>\n</body>\n</html>`},
+  {name:'CSS Grid',desc:'Responsive grid layout',lang:'html',code:`<!DOCTYPE html>\n<html>\n<head>\n<style>\n  * { box-sizing: border-box; margin: 0; padding: 0; }\n  body { background: #06070d; padding: 32px; font-family: sans-serif; }\n  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; }\n  .cell {\n    background: #0a0c14; border: 1px solid #1a2236;\n    border-radius: 8px; padding: 20px; text-align: center;\n    color: #94a3b8; font-size: 13px;\n    transition: border-color .2s, transform .2s;\n  }\n  .cell:hover { border-color: #2563eb; transform: translateY(-3px); color: #e2e8f0; }\n</style>\n</head>\n<body>\n  <div class="grid">\n    <div class="cell">🔶 HTML</div>\n    <div class="cell">🎨 CSS</div>\n    <div class="cell">⚡ JS</div>\n    <div class="cell">🐍 Python</div>\n    <div class="cell">⚛️ React</div>\n    <div class="cell">🗄️ SQL</div>\n  </div>\n</body>\n</html>`},
+  {name:'Counter App',desc:'JS state management',lang:'html',code:`<!DOCTYPE html>\n<html>\n<head>\n<style>\n  body { font-family: 'JetBrains Mono', monospace; background: #06070d; color: #e2e8f0; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; gap: 24px; }\n  #count { font-size: 80px; font-weight: 700; color: #3b82f6; }\n  .btns { display: flex; gap: 12px; }\n  button { padding: 10px 24px; border-radius: 8px; border: 1px solid #243044; background: #0a0c14; color: #94a3b8; cursor: pointer; font-size: 20px; transition: all .15s; }\n  button:hover { border-color: #3b82f6; color: #e2e8f0; }\n  #reset { font-size: 12px; color: #475569; cursor: pointer; }\n</style>\n</head>\n<body>\n  <div id="count">0</div>\n  <div class="btns">\n    <button onclick="change(-1)">−</button>\n    <button onclick="change(1)">+</button>\n  </div>\n  <span id="reset" onclick="reset()">Reset</span>\n  <script>\n    let n = 0;\n    function change(d) { n += d; document.getElementById('count').textContent = n; }\n    function reset() { n = 0; document.getElementById('count').textContent = 0; }\n  </script>\n</body>\n</html>`},
+  {name:'Dark Card List',desc:'Dynamic list with JS',lang:'html',code:`<!DOCTYPE html>\n<html>\n<head>\n<style>\n  * { box-sizing: border-box; margin: 0; padding: 0; }\n  body { background: #06070d; font-family: sans-serif; padding: 32px; }\n  .row { display: flex; gap: 8px; margin-bottom: 20px; }\n  input { flex:1; background: #0a0c14; border: 1px solid #1a2236; border-radius: 7px; padding: 10px 14px; color: #e2e8f0; font-size: 13px; outline: none; }\n  button { background: #2563eb; color: #fff; border: none; border-radius: 7px; padding: 10px 18px; cursor: pointer; font-size: 13px; }\n  .item { background: #0a0c14; border: 1px solid #1a2236; border-radius: 8px; padding: 12px 16px; margin-bottom: 8px; color: #94a3b8; font-size: 13px; display: flex; justify-content: space-between; }\n  .del { color: #475569; cursor: pointer; font-size: 16px; }\n  .del:hover { color: #f87171; }\n</style>\n</head>\n<body>\n  <div class="row">\n    <input id="inp" placeholder="Add an item..." onkeydown="if(event.key==='Enter')add()">\n    <button onclick="add()">Add</button>\n  </div>\n  <div id="list"></div>\n  <script>\n    const items = ['Learn HTML','Learn CSS','Build something cool'];\n    function render() {\n      document.getElementById('list').innerHTML = items.map((item,i) =>\n        '<div class=\"item\">' + item + '<span class=\"del\" onclick=\"del(' + i + ')\">×</span></div>'\n      ).join('');\n    }\n    function add() {\n      const v = document.getElementById('inp').value.trim();\n      if(v) { items.push(v); document.getElementById('inp').value=''; render(); }\n    }\n    function del(i) { items.splice(i,1); render(); }\n    render();\n  </script>\n</body>\n</html>`},
+  {name:'Canvas Art',desc:'Animated canvas drawing',lang:'html',code:`<!DOCTYPE html>\n<html>\n<head>\n<style>body{margin:0;background:#06070d;display:flex;align-items:center;justify-content:center;height:100vh}</style>\n</head>\n<body>\n<canvas id="c" width="400" height="400"></canvas>\n<script>\n  const c = document.getElementById('c').getContext('2d');\n  let t = 0;\n  function draw() {\n    c.fillStyle = 'rgba(6,7,13,0.15)';\n    c.fillRect(0,0,400,400);\n    for(let i=0;i<6;i++) {\n      const a = t * 0.02 + i * (Math.PI*2/6);\n      const x = 200 + Math.cos(a)*120;\n      const y = 200 + Math.sin(a)*120;\n      c.beginPath();\n      c.arc(x,y,18,0,Math.PI*2);\n      const hue = (i*60 + t) % 360;\n      c.fillStyle = 'hsl('+hue+',80%,60%)';\n      c.fill();\n    }\n    t++;\n    requestAnimationFrame(draw);\n  }\n  draw();\n</script>\n</body>\n</html>`},
+];
+
+/* ═══ APP STATE ═══ */
+let currentView     = 'home';
+let platState       = {};   // per-platform state: { activeCat, activeLevel, query, selectedFn }
+let searchOpen      = false;
+let searchFilter    = 'all';
+let searchFocusIdx  = -1;
+let searchMatches   = [];
+let pgLang          = 'html';
+
+/* ═══ ROUTING ═══ */
+function go(view) {
+  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+  document.getElementById('view-' + view).classList.add('active');
+  document.querySelectorAll('.nav-pill').forEach(p => p.classList.remove('active'));
+  const pill = document.querySelector(`[data-nav="${view}"]`);
+  if (pill) pill.classList.add('active');
+  currentView = view;
+  window.scrollTo(0,0);
+  if (['html','css','js','py','react','sql'].includes(view)) renderPlatform(view);
+  if (view === 'playground') initPlayground();
+  // reveal
+  setTimeout(() => initReveal(), 80);
+}
+
+/* ═══ PLATFORM RENDERER ═══ */
+function platColor(id) { return PLATFORMS[id]; }
+
+function renderPlatform(pid) {
+  const el   = document.getElementById('view-' + pid);
+  const p    = PLATFORMS[pid];
+  const fns  = DB[pid];
+  if (!platState[pid]) platState[pid] = { activeCat:'all', activeLevel:'all', query:'', selectedFn:null };
+
+  // build category list
+  const cats = ['all', ...new Set(fns.map(f => f.cat))];
+  const catCounts = {};
+  cats.forEach(c => catCounts[c] = c === 'all' ? fns.length : fns.filter(f => f.cat === c).length);
+
+  el.innerHTML = `
+    <div class="plat-hero">
+      <div>
+        <div class="plat-badge" style="background:${p.dim};border-color:${p.accent}33;color:${p.accent}">
+          <span>${p.icon}</span> ${p.label} Platform Reference
+        </div>
+        <div class="plat-title" style="color:${p.accent}">${p.label}</div>
+        <div class="plat-sub">Every ${p.label} function, property, and method — searchable, filterable, with live examples. Click any function to explore its full reference.</div>
+      </div>
+      <div class="plat-stats">
+        <div class="pstat"><span class="pstat-n">${fns.length}</span><span class="pstat-l">functions</span></div>
+        <div class="pstat"><span class="pstat-n">${cats.length - 1}</span><span class="pstat-l">categories</span></div>
+        <div class="pstat"><span class="pstat-n">live</span><span class="pstat-l">examples</span></div>
+      </div>
+    </div>
+    <div class="full-line"></div>
+    <div class="plat-layout">
+      <aside class="plat-sb" id="${pid}-sb">
+        <div class="sb-search">
+          <span style="color:var(--silver2);font-size:13px">⌕</span>
+          <input type="text" id="${pid}-search" placeholder="Filter..." autocomplete="off">
+        </div>
+        <div class="sb-heading" style="color:${p.accent}">Categories</div>
+        ${cats.map(c => `
+          <div class="sb-item${c === 'all' ? ' active' : ''}" data-cat="${c}" style="${c === 'all' ? `color:${p.accent};background:${p.dim}` : ''}">
+            <span class="sb-dot"></span>${c === 'all' ? 'All Functions' : c}
+            <span class="sb-cnt">${catCounts[c]}</span>
+          </div>`).join('')}
+        <div class="sb-div"></div>
+        <div class="sb-heading" style="color:${p.accent}">Level</div>
+        ${['all','beginner','intermediate','advanced'].map(l => `
+          <div class="sb-item${l === 'all' ? ' active' : ''}" data-level="${l}" style="${l === 'all' ? `color:${p.accent};background:${p.dim}` : ''}">
+            <span class="sb-dot"></span>${l === 'all' ? 'All Levels' : l}
+          </div>`).join('')}
+      </aside>
+      <main class="func-list" id="${pid}-list">
+        <div class="list-bar">
+          <span class="list-title" id="${pid}-list-title">All Functions</span>
+          <span class="list-count" id="${pid}-list-count">${fns.length} total</span>
+          <div class="lvl-pills">
+            ${['all','beginner','intermediate','advanced'].map(l => `
+              <button class="lvl-pill${l==='all'?' active':''}" data-pill="${l}" style="${l==='all'?`color:${p.accent};background:${p.dim};border-color:${p.accent}44`:''}">${l==='all'?'All':l}</button>`).join('')}
+          </div>
+        </div>
+        <div id="${pid}-cards"></div>
+      </main>
+      <aside class="detail" id="${pid}-detail">
+        <div class="detail-empty" id="${pid}-empty">
+          <div class="detail-empty-icon">${p.icon}</div>
+          <div class="detail-empty-txt">Click any function to see its full reference, syntax, parameters, and examples.</div>
+        </div>
+        <div id="${pid}-detail-content" style="display:none"></div>
+      </aside>
+    </div>
+  `;
+
+  // Bind sidebar cats
+  el.querySelectorAll('[data-cat]').forEach(item => {
+    item.addEventListener('click', () => {
+      platState[pid].activeCat = item.dataset.cat;
+      el.querySelectorAll('[data-cat]').forEach(i => { i.classList.remove('active'); i.style.color=''; i.style.background=''; });
+      item.classList.add('active'); item.style.color = p.accent; item.style.background = p.dim;
+      renderCards(pid);
+    });
+  });
+  // Bind sidebar levels
+  el.querySelectorAll('[data-level]').forEach(item => {
+    item.addEventListener('click', () => {
+      platState[pid].activeLevel = item.dataset.level;
+      el.querySelectorAll('[data-level]').forEach(i => { i.classList.remove('active'); i.style.color=''; i.style.background=''; });
+      item.classList.add('active'); item.style.color = p.accent; item.style.background = p.dim;
+      renderCards(pid);
+    });
+  });
+  // Bind level pills
+  el.querySelectorAll('[data-pill]').forEach(pill => {
+    pill.addEventListener('click', () => {
+      platState[pid].activeLevel = pill.dataset.pill;
+      el.querySelectorAll('[data-pill]').forEach(p2 => { p2.classList.remove('active'); p2.style.color=''; p2.style.background=''; p2.style.borderColor=''; });
+      pill.classList.add('active'); pill.style.color=p.accent; pill.style.background=p.dim; pill.style.borderColor=p.accent+'44';
+      renderCards(pid);
+    });
+  });
+  // Bind search
+  document.getElementById(pid + '-search').addEventListener('input', e => {
+    platState[pid].query = e.target.value;
+    renderCards(pid);
+  });
+
+  renderCards(pid);
+}
+
+function renderCards(pid) {
+  const st  = platState[pid];
+  const p   = PLATFORMS[pid];
+  const fns = DB[pid].filter(f => {
+    const catOk   = st.activeCat === 'all' || f.cat === st.activeCat;
+    const levelOk = st.activeLevel === 'all' || f.level === st.activeLevel;
+    const q       = st.query.toLowerCase();
+    const qOk     = !q || f.name.toLowerCase().includes(q) || f.desc.toLowerCase().includes(q) || (f.tags||[]).join(' ').toLowerCase().includes(q);
+    return catOk && levelOk && qOk;
+  });
+  const cont = document.getElementById(pid + '-cards');
+  if (!cont) return;
+  document.getElementById(pid + '-list-count').textContent = fns.length + ' function' + (fns.length!==1?'s':'');
+  if (!fns.length) { cont.innerHTML = `<div style="text-align:center;padding:48px;color:var(--silver3);font-size:12px">No functions match your filters.</div>`; return; }
+  cont.innerHTML = fns.map(fn => `
+    <div class="fc${st.selectedFn && st.selectedFn.name===fn.name?' sel':''}" onclick="selectFn('${pid}','${fn.name.replace(/'/g,"&#39;")}')"
+      style="--bc:${p.accent}">
+      <div class="fc-top">
+        <span class="fc-name" style="color:${p.accent}">${fn.name}</span>
+        <span class="fc-badge" style="background:${p.dim};color:${p.accent}">${fn.cat}</span>
+        <span class="fc-badge" style="background:rgba(100,116,139,.12);color:var(--silver2);margin-left:2px">${fn.level}</span>
+        <span class="fc-live">▶ live</span>
+      </div>
+      <div class="fc-desc">${fn.desc}</div>
+      ${fn.tags ? `<div class="fc-tags">${fn.tags.map(t=>`<span class="fc-tag">${t}</span>`).join('')}</div>` : ''}
+    </div>`).join('');
+
+  // apply ::before via inline style on individual cards
+  cont.querySelectorAll('.fc').forEach(c => {
+    c.style.setProperty('--bclr', p.accent);
+  });
+
+  // Re-inject the left border via a style trick
+  document.querySelectorAll('.fc').forEach(c => {
+    c.addEventListener('mouseenter', () => c.style.borderLeftColor = p.accent);
+    c.addEventListener('mouseleave', () => { if (!c.classList.contains('sel')) c.style.borderLeftColor = ''; });
+  });
+}
+
+function selectFn(pid, name) {
+  const fn = DB[pid].find(f => f.name === name);
+  if (!fn) return;
+  const p = PLATFORMS[pid];
+  platState[pid].selectedFn = fn;
+  // re-render cards for selected state
+  renderCards(pid);
+  const empty   = document.getElementById(pid + '-empty');
+  const content = document.getElementById(pid + '-detail-content');
+  if (!empty || !content) return;
+  empty.style.display   = 'none';
+  content.style.display = 'block';
+
+  const paramsHTML = fn.params && fn.params.length ? `
+    <table class="params-tbl">
+      <thead><tr><th>Parameter</th><th>Type</th><th>Description</th><th></th></tr></thead>
+      <tbody>${fn.params.map(pm=>`
+        <tr>
+          <td class="p-nm">${pm.n}</td>
+          <td class="p-ty">${pm.t}</td>
+          <td class="p-dc">${pm.d}</td>
+          <td>${pm.opt?'<span class="p-opt">optional</span>':''}</td>
+        </tr>`).join('')}
+      </tbody>
+    </table>` : '<div style="font-size:11px;color:var(--silver3)">No parameters.</div>';
+
+  content.innerHTML = `
+    <div class="d-fn" style="color:${p.accent}">${fn.name}</div>
+    <div class="d-row">
+      <span class="fc-badge" style="background:${p.dim};color:${p.accent}">${fn.cat}</span>
+      <span class="fc-badge" style="background:rgba(100,116,139,.12);color:var(--silver2)">${fn.level}</span>
+    </div>
+    <div class="d-desc">${fn.desc}</div>
+
+    <div class="d-sec">
+      <div class="d-sec-title">Syntax</div>
+      <div class="code-block">
+        <button class="code-copy" onclick="copyCode(this)">copy</button>
+        <pre>${fn.syntax||''}</pre>
+      </div>
+    </div>
+
+    <div class="d-sec">
+      <div class="d-sec-title">Output</div>
+      <div class="out-block">
+        <div class="out-lbl">→ returns / produces</div>
+        ${fn.output||'varies'}
+      </div>
+    </div>
+
+    <div class="d-sec">
+      <div class="d-sec-title">Parameters</div>
+      ${paramsHTML}
+    </div>
+
+    <div class="d-sec">
+      <div class="d-sec-title">Pro Tip</div>
+      <div class="tip-box"><strong>⚡</strong> ${fn.tips||'No tips yet.'}</div>
+    </div>
+
+    ${fn.related && fn.related.length ? `
+    <div class="d-sec">
+      <div class="d-sec-title">Related</div>
+      <div class="related-chips">
+        ${fn.related.map(r=>`<span class="rel-chip" style="background:${p.dim};color:${p.accent};border-color:${p.accent}33" onclick="searchRelated('${pid}','${r.replace(/'/g,"&#39;")}')">${r}</span>`).join('')}
+      </div>
+    </div>` : ''}
+
+    <button class="try-btn" style="background:${p.dim};color:${p.accent};border-color:${p.accent}44" onclick="go('playground')">
+      ⚡ Try it in Playground →
+    </button>
+  `;
+}
+
+function searchRelated(pid, name) {
+  const fn = DB[pid].find(f => f.name === name);
+  if (fn) { selectFn(pid, fn.name); }
+  else { platState[pid].query = name; document.getElementById(pid+'-search').value=name; renderCards(pid); }
+}
+
+function copyCode(btn) {
+  const code = btn.parentElement.querySelector('pre').textContent;
+  navigator.clipboard.writeText(code).then(() => {
+    btn.textContent = 'copied!'; btn.style.color = 'var(--green)';
+    setTimeout(() => { btn.textContent = 'copy'; btn.style.color = ''; }, 1600);
+  });
+}
+
+/* ═══ HOME COUNTS ═══ */
+function updateHomeCounts() {
+  Object.keys(DB).forEach(k => {
+    const el = document.getElementById('hc-' + k);
+    if (el) el.textContent = DB[k].length + ' ' + (k==='html'?'tags':k==='css'?'properties':k==='py'?'builtins':k==='react'?'hooks/apis':k==='sql'?'commands':'methods');
+  });
+}
+
+/* ═══ SEARCH MODAL ═══ */
+const allFunctions = Object.entries(DB).flatMap(([pid, fns]) =>
+  fns.map(fn => ({ ...fn, platform: pid }))
+);
+
+function openSearch() {
+  document.getElementById('s-overlay').classList.add('open');
+  setTimeout(() => document.getElementById('s-inp').focus(), 60);
+  searchFocusIdx = -1;
+  renderSearch('');
+}
+function closeSearch() {
+  document.getElementById('s-overlay').classList.remove('open');
+  document.getElementById('s-inp').value = '';
+}
+function hlText(text, q) {
+  if (!q) return text;
+  const i = text.toLowerCase().indexOf(q.toLowerCase());
+  if (i < 0) return text;
+  return text.slice(0,i) + '<mark>' + text.slice(i,i+q.length) + '</mark>' + text.slice(i+q.length);
+}
+function renderSearch(q) {
+  const res = document.getElementById('s-res');
+  res.innerHTML = '';
+  const filtered = allFunctions.filter(fn => {
+    const pfOk = searchFilter === 'all' || fn.platform === searchFilter;
+    const qOk  = !q || fn.name.toLowerCase().includes(q.toLowerCase()) || fn.desc.toLowerCase().includes(q.toLowerCase());
+    return pfOk && qOk;
+  }).slice(0, 12);
+  searchMatches = filtered;
+  const lbl = document.createElement('span');
+  lbl.className = 's-section-lbl';
+  lbl.textContent = q ? `Results for "${q}"` : 'Popular functions';
+  res.appendChild(lbl);
+  filtered.forEach((fn, i) => {
+    const p  = PLATFORMS[fn.platform];
+    const el = document.createElement('div');
+    el.className = 's-item';
+    el.dataset.index = i;
+    el.innerHTML = `
+      <div class="s-ico" style="background:${p.dim};color:${p.accent}">${p.icon}</div>
+      <div class="s-body">
+        <div class="s-name">${hlText(fn.name, q)}</div>
+        <div class="s-desc">${fn.desc}</div>
+      </div>
+      <span class="s-badge" style="background:${p.dim};color:${p.accent}">${p.label}</span>`;
+    el.addEventListener('click', () => { closeSearch(); go(fn.platform); setTimeout(() => selectFn(fn.platform, fn.name), 200); });
+    el.addEventListener('mouseenter', () => setSFocus(i));
+    res.appendChild(el);
+  });
+  document.getElementById('s-count').textContent = filtered.length + ' result' + (filtered.length!==1?'s':'');
+  searchFocusIdx = -1;
+}
+function setSFocus(i) {
+  document.querySelectorAll('.s-item').forEach(el => el.classList.remove('focused'));
+  searchFocusIdx = i;
+  const el = document.querySelector(`.s-item[data-index="${i}"]`);
+  if (el) { el.classList.add('focused'); el.scrollIntoView({ block:'nearest' }); }
+}
+
+// Search events
+document.getElementById('s-inp').addEventListener('input', e => renderSearch(e.target.value));
+document.getElementById('s-esc').addEventListener('click', closeSearch);
+document.getElementById('s-overlay').addEventListener('click', e => { if (e.target.id==='s-overlay') closeSearch(); });
+document.querySelectorAll('.sf').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.sf').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    searchFilter = btn.dataset.sf;
+    renderSearch(document.getElementById('s-inp').value);
+  });
+});
+
+/* ═══ KEYBOARD ═══ */
+document.addEventListener('keydown', e => {
+  if ((e.metaKey||e.ctrlKey) && e.key==='k') { e.preventDefault(); document.getElementById('s-overlay').classList.contains('open') ? closeSearch() : openSearch(); return; }
+  if (!document.getElementById('s-overlay').classList.contains('open')) return;
+  const items = document.querySelectorAll('.s-item');
+  if (e.key==='Escape') { closeSearch(); return; }
+  if (e.key==='ArrowDown') { e.preventDefault(); setSFocus(Math.min(searchFocusIdx+1, items.length-1)); }
+  if (e.key==='ArrowUp')   { e.preventDefault(); setSFocus(Math.max(searchFocusIdx-1, 0)); }
+  if (e.key==='Enter' && searchFocusIdx>=0) {
+    const fn = searchMatches[searchFocusIdx];
+    if (fn) { closeSearch(); go(fn.platform); setTimeout(() => selectFn(fn.platform, fn.name), 200); }
+  }
+});
+
+/* ═══ PLAYGROUND ═══ */
+const DEFAULT_CODES = {
+  html: `<!DOCTYPE html>\n<html lang="en">\n<head>\n<style>\n  body {\n    font-family: 'Segoe UI', sans-serif;\n    background: #06070d;\n    color: #e2e8f0;\n    display: flex;\n    flex-direction: column;\n    align-items: center;\n    justify-content: center;\n    min-height: 100vh;\n    gap: 16px;\n  }\n  h1 { color: #3b82f6; font-size: 2rem; }\n  p  { color: #64748b; }\n  .badge { background: rgba(37,99,235,.15); color: #3b82f6; padding: 6px 16px; border-radius: 100px; font-size: 13px; }\n</style>\n</head>\n<body>\n  <h1>⚡ DevDen Playground</h1>\n  <p>Edit this code and click <strong>Run</strong> to see the output!</p>\n  <span class="badge">Built by Ram</span>\n</body>\n</html>`,
+  css: `<!DOCTYPE html>\n<html>\n<head>\n<style>\n  body { margin: 0; background: #06070d; display: flex; align-items: center; justify-content: center; min-height: 100vh; }\n\n  /* Edit the styles below! */\n  .box {\n    width: 120px;\n    height: 120px;\n    background: #2563eb;\n    border-radius: 12px;\n    animation: spin 3s linear infinite;\n  }\n\n  @keyframes spin {\n    from { transform: rotate(0deg); }\n    to   { transform: rotate(360deg); }\n  }\n</style>\n</head>\n<body><div class="box"></div></body>\n</html>`,
+  js: `<!DOCTYPE html>\n<html>\n<head>\n<style>\n  body { font-family: monospace; background:#06070d; color:#e2e8f0; padding:24px; }\n  #out { background:#0a0c14; border:1px solid #1a2236; border-radius:8px; padding:16px; white-space:pre; font-size:13px; color:#86efac; line-height:1.8; }\n</style>\n</head>\n<body>\n<div id="out"></div>\n<script>\n  const out = document.getElementById('out');\n  function log(...args) { out.textContent += args.join(' ') + '\\n'; }\n\n  // Edit code below\n  const nums = [1,2,3,4,5];\n  log('Array:', JSON.stringify(nums));\n  log('Doubled:', JSON.stringify(nums.map(n => n * 2)));\n  log('Evens:', JSON.stringify(nums.filter(n => n % 2 === 0)));\n  log('Sum:', nums.reduce((a, n) => a + n, 0));\n  log('Max:', Math.max(...nums));\n  log('Random:', Math.floor(Math.random() * 100));\n<\\/script>\n</body>\n</html>`,
+};
+
+function initPlayground() {
+  const ta = document.getElementById('pg-textarea');
+  if (!ta.value) ta.value = DEFAULT_CODES[pgLang];
+  // Build snippets
+  const sg = document.getElementById('snip-grid');
+  if (sg && !sg.children.length) {
+    SNIPPETS.forEach(s => {
+      const card = document.createElement('div');
+      card.className = 'snip-card';
+      card.innerHTML = `<div class="snip-name">${s.name}</div><div class="snip-desc">${s.desc}</div>`;
+      card.addEventListener('click', () => { ta.value = s.code; runCode(); });
+      sg.appendChild(card);
+    });
+  }
+  // Tab switch
+  document.querySelectorAll('.pg-tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+      document.querySelectorAll('.pg-tab').forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+      pgLang = tab.dataset.lang;
+      document.getElementById('pg-fname').textContent = pgLang === 'html' ? 'index.html' : pgLang === 'css' ? 'styles.css' : 'script.js';
+      ta.value = DEFAULT_CODES[pgLang] || '';
+      runCode();
+    });
+  });
+  setTimeout(runCode, 100);
+}
+
+function runCode() {
+  const code    = document.getElementById('pg-textarea').value;
+  const preview = document.getElementById('pg-preview');
+  const consoleEl = document.getElementById('pg-console');
+  try {
+    const doc = preview.contentDocument || preview.contentWindow.document;
+    doc.open();
+    doc.write(code.replace('<\\/script>','</script>'));
+    doc.close();
+    consoleEl.textContent = '// ✓ Ran at ' + new Date().toLocaleTimeString();
+    consoleEl.style.color = '#86efac';
+  } catch(e) {
+    consoleEl.textContent = '// Error: ' + e.message;
+    consoleEl.style.color = '#f87171';
+  }
+}
+
+/* ═══ CURSOR ═══ */
+const cur = document.getElementById('cur');
+const curR = document.getElementById('cur-r');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove', e => { mx=e.clientX; my=e.clientY; cur.style.left=mx+'px'; cur.style.top=my+'px'; });
+(function anim() { rx+=(mx-rx)*.15; ry+=(my-ry)*.15; curR.style.left=rx+'px'; curR.style.top=ry+'px'; requestAnimationFrame(anim); })();
+document.addEventListener('mouseover', e => {
+  if (e.target.matches('button,a,.fc,.p-card,.sb-item,.rel-chip,.snip-card,.lvl-pill,.nav-pill,.pg-tab')) {
+    cur.style.width='18px'; cur.style.height='18px'; curR.style.width='44px'; curR.style.height='44px';
+  }
+});
+document.addEventListener('mouseout', e => {
+  if (e.target.matches('button,a,.fc,.p-card,.sb-item,.rel-chip,.snip-card,.lvl-pill,.nav-pill,.pg-tab')) {
+    cur.style.width='10px'; cur.style.height='10px'; curR.style.width='32px'; curR.style.height='32px';
+  }
+});
+
+/* ═══ SCROLL REVEAL ═══ */
+function initReveal() {
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); } });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.reveal:not(.visible)').forEach(el => obs.observe(el));
+}
+
+/* ═══ NAV SCROLL ═══ */
+window.addEventListener('scroll', () => {
+  document.getElementById('nav').style.borderBottomColor = window.scrollY > 5 ? 'var(--border2)' : 'var(--border)';
+});
+
+/* ═══ INIT ═══ */
+updateHomeCounts();
+initReveal();
+// Hash routing
+function handleHash() {
+  const h = location.hash.replace('#','') || 'home';
+  const valid = ['home','html','css','js','py','react','sql','playground'];
+  go(valid.includes(h) ? h : 'home');
+}
+window.addEventListener('hashchange', handleHash);
+// Override go() to update hash
+const _go = go;
+window.go = function(v) { location.hash = v === 'home' ? '' : v; _go(v); };
+handleHash();
+</script>
+</body>
+</html>
